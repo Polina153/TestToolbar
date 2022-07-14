@@ -33,8 +33,8 @@ public class MyFragment extends Fragment {
         setHasOptionsMenu(true);
         ActionBar toolbar = activity.getSupportActionBar();
         if (toolbar != null) {
-            toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setHomeButtonEnabled(true);
+            toolbar.setDisplayHomeAsUpEnabled(false);
+         //   toolbar.setHomeButtonEnabled(true);
         }
     }
 
