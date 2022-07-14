@@ -29,7 +29,7 @@ public class SecondFragment extends Fragment {
 
     private void setActionBar(@NonNull View view) {
         AppCompatActivity activity = ((AppCompatActivity) requireActivity());
-        activity.setSupportActionBar(view.findViewById(R.id.my_toolbar));
+        activity.setSupportActionBar(view.findViewById(R.id.second_toolbar));
         setHasOptionsMenu(true);
         ActionBar toolbar = activity.getSupportActionBar();
         if (toolbar != null) {
