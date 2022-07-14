@@ -24,6 +24,7 @@ public class SecondFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setActionBar(view);
 
+        setHasOptionsMenu(true);
     }
 
     private void setActionBar(@NonNull View view) {

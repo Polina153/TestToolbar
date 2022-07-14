@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="@string/button"
         android:textColor="@color/text_color"
-        android:textStyle="bold"
+        android:textStyle="bold|italic"
 
         />
 </LinearLayout>
