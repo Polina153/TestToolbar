@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -40,10 +42,21 @@ public class SecondFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            ((MainActivity) requireActivity()).showAlertDialog();
+            showAlertDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showAlertDialog() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Do you really want to go?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialogInterface, i) -> {
+                    new Navigation(getParentFragmentManager()).popBackStack();
+                })
+                .setNegativeButton("No", (dialogInterface, i) -> Toast.makeText(requireActivity().getBaseContext(), "No!", Toast.LENGTH_SHORT).show())
+                .show();
     }
 
     public static SecondFragment newInstance() {
