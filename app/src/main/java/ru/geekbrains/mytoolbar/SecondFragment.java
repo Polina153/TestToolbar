@@ -40,8 +40,7 @@ public class SecondFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            //Toast.makeText(requireContext(), "Click", Toast.LENGTH_SHORT).show();
-            ((MainActivity) requireActivity()).navigation.popBackStack();
+            ((MainActivity) requireActivity()).showAlertDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
