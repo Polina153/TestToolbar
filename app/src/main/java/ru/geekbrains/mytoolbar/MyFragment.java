@@ -24,7 +24,6 @@ public class MyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //view.findViewById(R.id.my_button).setOnClickListener(view1 -> addFragment(SecondFragment.newInstance()));
         setActionBar(view);
     }
 

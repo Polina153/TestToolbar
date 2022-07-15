@@ -23,13 +23,4 @@
             app:titleTextColor="@color/text_color"
             />
     </com.google.android.material.appbar.AppBarLayout>
-
-    <Button
-        android:id="@+id/my_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button"
-        android:textColor="@color/text_color"
-        android:textStyle="bold|italic"
-        />
 </LinearLayout>
