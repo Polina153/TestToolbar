@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 
 public class SecondFragment extends Fragment {
 
+    //TODO Dependency injection
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,17 +30,6 @@ public class SecondFragment extends Fragment {
         setActionBar(view);
     }
 
-    private void setActionBar(@NonNull View view) {
-        AppCompatActivity activity = ((AppCompatActivity) requireActivity());
-        activity.setSupportActionBar(view.findViewById(R.id.second_toolbar));
-        setHasOptionsMenu(true);
-        ActionBar toolbar = activity.getSupportActionBar();
-        if (toolbar != null) {
-            toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setHomeButtonEnabled(true);
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -48,14 +39,24 @@ public class SecondFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showAlertDialog() {
+    private void setActionBar(@NonNull View view) {
+        AppCompatActivity activity = ((AppCompatActivity) requireActivity());
+        activity.setSupportActionBar(view.findViewById(R.id.second_toolbar));
+        ActionBar toolbar = activity.getSupportActionBar();
+        if (toolbar != null) {
+            toolbar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setHomeButtonEnabled(true);
+        }
+        setHasOptionsMenu(true);
+    }
+
+    private void showAlertDialog() {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Do you really want to go?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", (dialogInterface, i) -> {
-                    new Navigation(getParentFragmentManager()).popBackStack();
-                })
-                .setNegativeButton("No", (dialogInterface, i) -> Toast.makeText(requireActivity().getBaseContext(), "No!", Toast.LENGTH_SHORT).show())
+                .setTitle("Do you really want to go?")//FIXME to resources
+                .setPositiveButton("Yes", (dialogInterface, i) ->
+                        new Navigator(getParentFragmentManager()).popBackStack())//FIXME new Navigator, to resources
+                .setNegativeButton("No", (dialogInterface, i) ->
+                        Toast.makeText(requireActivity().getBaseContext(), "No!", Toast.LENGTH_SHORT).show())//FIXME
                 .show();
     }
 

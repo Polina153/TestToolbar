@@ -1,5 +1,6 @@
 package ru.geekbrains.mytoolbar;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,15 @@ import androidx.fragment.app.Fragment;
 
 public class MyFragment extends Fragment {
 
+    //TODO Create recyclerView
+    private Navigator navigator;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        navigator = ((MainActivity) context).getNavigator();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,13 +37,6 @@ public class MyFragment extends Fragment {
         setActionBar(view);
     }
 
-    private void setActionBar(@NonNull View view) {
-        AppCompatActivity activity = ((AppCompatActivity) requireActivity());
-        activity.setSupportActionBar(view.findViewById(R.id.my_toolbar));
-        setHasOptionsMenu(true);
-    }
-
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.cards_menu, menu);
@@ -43,13 +46,18 @@ public class MyFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            ((MainActivity) requireActivity()).navigation.addFragment(SecondFragment.newInstance());
-            //Navigation.addFragment(requireActivity().getSupportFragmentManager(), SecondFragment.newInstance());
-            //Toast.makeText(requireContext(), "Click", Toast.LENGTH_SHORT).show();
+            navigator.addFragment(SecondFragment.newInstance());
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setActionBar(@NonNull View view) {
+        //TODO Move Toolbar creation in separate class
+        AppCompatActivity activity = ((AppCompatActivity) requireActivity());
+        activity.setSupportActionBar(view.findViewById(R.id.my_toolbar));
+        setHasOptionsMenu(true);
     }
 
     public static Fragment newInstance() {

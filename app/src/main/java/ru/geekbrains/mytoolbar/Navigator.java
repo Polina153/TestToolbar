@@ -1,17 +1,16 @@
 package ru.geekbrains.mytoolbar;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class Navigation {
+public class Navigator {
 
     @Nullable
     private final FragmentManager fragmentManager;
 
-    public Navigation(@NonNull FragmentManager fragmentManager) {
+    public Navigator(@Nullable FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
