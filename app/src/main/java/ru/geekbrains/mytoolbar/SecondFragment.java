@@ -1,5 +1,6 @@
 package ru.geekbrains.mytoolbar;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,7 +17,13 @@ import androidx.fragment.app.Fragment;
 
 public class SecondFragment extends Fragment {
 
-    //TODO Dependency injection
+    private Navigator navigator;//TODO Dependency injection
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        navigator = ((MainActivity) context).getNavigator();
+    }
 
     @Nullable
     @Override
@@ -54,7 +61,7 @@ public class SecondFragment extends Fragment {
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.question_to_user)//FIXME to resources FIXED
                 .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
-                        new Navigator(getParentFragmentManager()).popBackStack())//FIXME new Navigator, to resources FIXED
+                        navigator.popBackStack())//FIXME new Navigator, to resources FIXED
                 .setNegativeButton(R.string.negative_button, (dialogInterface, i) ->
                         Toast.makeText(requireActivity().getBaseContext(), "No!", Toast.LENGTH_SHORT).show())//FIXME
                 .show();
