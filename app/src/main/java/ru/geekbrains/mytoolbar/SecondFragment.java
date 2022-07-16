@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 
 public class SecondFragment extends Fragment {
 
-    private Navigator navigator;//TODO Dependency injection
+    private Navigator navigator;
     private ToolbarCreator toolbarCreator;
 
     @Override
@@ -35,7 +35,11 @@ public class SecondFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        toolbarCreator.setActionBar(view, ((AppCompatActivity) requireActivity()), R.id.second_toolbar, true);
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        toolbarCreator.setActionBar(
+                view.findViewById(R.id.second_toolbar),
+                activity);
+        toolbarCreator.setButtonBack(activity.getSupportActionBar());
         setHasOptionsMenu(true);
     }
 
@@ -50,9 +54,9 @@ public class SecondFragment extends Fragment {
 
     private void showAlertDialog() {
         new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.question_to_user)//FIXME to resources FIXED
+                .setTitle(R.string.question_to_user)
                 .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
-                        navigator.popBackStack())//FIXME new Navigator, to resources FIXED
+                        navigator.popBackStack())
                 .setNegativeButton(R.string.negative_button, (dialogInterface, i) ->
                         Toast.makeText(requireActivity().getBaseContext(), "No!", Toast.LENGTH_SHORT).show())//FIXME
                 .show();

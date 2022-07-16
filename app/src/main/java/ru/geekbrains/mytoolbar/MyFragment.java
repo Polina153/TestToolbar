@@ -36,7 +36,9 @@ public class MyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        toolbarCreator.setActionBar(view, ((AppCompatActivity) requireActivity()), R.id.my_toolbar, false);
+        toolbarCreator.setActionBar(
+                view.findViewById(R.id.my_toolbar),
+                ((AppCompatActivity) requireActivity()));
         setHasOptionsMenu(true);
     }
 

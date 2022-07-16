@@ -6,15 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final ToolbarCreator toolbarCreator = new ToolbarCreator();
     private Navigator navigator;
-    private ToolbarCreator toolbarCreator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navigator = new Navigator(getSupportFragmentManager());
-        toolbarCreator = new ToolbarCreator();
         navigator.addFragment(MyFragment.newInstance());
     }
 
