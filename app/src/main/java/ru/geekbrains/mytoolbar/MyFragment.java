@@ -1,5 +1,7 @@
 package ru.geekbrains.mytoolbar;
 
+import static ru.geekbrains.mytoolbar.ToolbarCreator.toolbarCreator;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,7 +36,8 @@ public class MyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setActionBar(view);
+        toolbarCreator.setActionBar(view, ((AppCompatActivity) requireActivity()), R.id.my_toolbar, false);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -51,13 +54,6 @@ public class MyFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setActionBar(@NonNull View view) {
-        //TODO Move Toolbar creation in separate class
-        AppCompatActivity activity = ((AppCompatActivity) requireActivity());
-        activity.setSupportActionBar(view.findViewById(R.id.my_toolbar));
-        setHasOptionsMenu(true);
     }
 
     public static Fragment newInstance() {

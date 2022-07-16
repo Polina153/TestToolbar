@@ -1,5 +1,7 @@
 package ru.geekbrains.mytoolbar;
 
+import static ru.geekbrains.mytoolbar.ToolbarCreator.toolbarCreator;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -34,7 +35,8 @@ public class SecondFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setActionBar(view);
+        toolbarCreator.setActionBar(view, ((AppCompatActivity) requireActivity()), R.id.second_toolbar, true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -44,17 +46,6 @@ public class SecondFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setActionBar(@NonNull View view) {
-        AppCompatActivity activity = ((AppCompatActivity) requireActivity());
-        activity.setSupportActionBar(view.findViewById(R.id.second_toolbar));
-        ActionBar toolbar = activity.getSupportActionBar();
-        if (toolbar != null) {
-            toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setHomeButtonEnabled(true);
-        }
-        setHasOptionsMenu(true);
     }
 
     private void showAlertDialog() {
