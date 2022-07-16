@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,35 +15,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MyFragment extends Fragment {
+public class MyFragment extends Fragment implements NotesAdapter.OnMyItemClickListener {
 
-    //TODO Create recyclerView
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
+
+    //FIXME Remove
+    private final NotesAdapter.OnMyItemClickListener clickListener = new NotesAdapter.OnMyItemClickListener() {
+
+        @Override
+        public void onListItemClick(int listItemPosition) {
+            Toast.makeText(requireActivity(), "" + (listItemPosition + 1), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    //FIXME Remove
+    @Override
+    public void onListItemClick(int listItemPosition) {
+        Toast.makeText(requireActivity(), "" + (listItemPosition + 1), Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         navigator = ((MainActivity) context).getNavigator();
         toolbarCreator = ((MainActivity) context).getToolbarCreator();
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.my_fragment, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
-        final ArrayList<Note> userNotes = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            String index = String.valueOf(i+1);
-            userNotes.add(new Note(index, "text", index));
-        }
-        final NotesAdapter notesAdapter = new NotesAdapter(userNotes);
-        //RecyclerView.Adapter notesAdapter;
-        recyclerView.setAdapter(notesAdapter);
-        return view;
+        return inflater.inflate(R.layout.my_fragment, container, false);
 
     }
 
@@ -51,10 +54,21 @@ public class MyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         toolbarCreator.setActionBar(view, ((AppCompatActivity) requireActivity()), R.id.my_toolbar, false);
         setHasOptionsMenu(true);
+        createRecyclerView(view);
+    }
+
+    private void createRecyclerView(@NonNull View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
+        final ArrayList<Note> userNotes = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            String index = String.valueOf(i + 1);
+            userNotes.add(new Note(index, "text", index));
+        }
+        final NotesAdapter notesAdapter = new NotesAdapter(userNotes, this); //TODO move implementation back here
+        recyclerView.setAdapter(notesAdapter);
     }
 
     public static Fragment newInstance() {
         return new MyFragment();
     }
-
 }

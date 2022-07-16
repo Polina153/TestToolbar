@@ -26,17 +26,5 @@ public class ToolbarCreator {
    //     }
     }
 
-/*
 
-    private void setActionBar(@NonNull View view) {
-        AppCompatActivity activity = ((AppCompatActivity) requireActivity());
-        activity.setSupportActionBar(view.findViewById(R.id.second_toolbar));
-        ActionBar toolbar = activity.getSupportActionBar();
-        if (toolbar != null) {
-            toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setHomeButtonEnabled(true);
-        }
-        setHasOptionsMenu(true);
-    }
-*/
 }
