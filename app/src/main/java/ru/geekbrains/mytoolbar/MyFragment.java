@@ -1,7 +1,5 @@
 package ru.geekbrains.mytoolbar;
 
-import static ru.geekbrains.mytoolbar.ToolbarCreator.toolbarCreator;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,11 +18,13 @@ public class MyFragment extends Fragment {
 
     //TODO Create recyclerView
     private Navigator navigator;
+    private ToolbarCreator toolbarCreator;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         navigator = ((MainActivity) context).getNavigator();
+        toolbarCreator = ((MainActivity) context).getToolbarCreator();
     }
 
     @Nullable

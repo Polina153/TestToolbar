@@ -8,12 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ToolbarCreator {
 
-    public static ToolbarCreator toolbarCreator = new ToolbarCreator();
-
-    public ToolbarCreator(){
-
-    }
-
     void setActionBar(@NonNull View view,
                       AppCompatActivity activity,
                       int layoutItem,

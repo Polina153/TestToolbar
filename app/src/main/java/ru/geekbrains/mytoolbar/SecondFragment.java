@@ -1,7 +1,5 @@
 package ru.geekbrains.mytoolbar;
 
-import static ru.geekbrains.mytoolbar.ToolbarCreator.toolbarCreator;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,11 +17,13 @@ import androidx.fragment.app.Fragment;
 public class SecondFragment extends Fragment {
 
     private Navigator navigator;//TODO Dependency injection
+    private ToolbarCreator toolbarCreator;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         navigator = ((MainActivity) context).getNavigator();
+        toolbarCreator = ((MainActivity) context).getToolbarCreator();
     }
 
     @Nullable
