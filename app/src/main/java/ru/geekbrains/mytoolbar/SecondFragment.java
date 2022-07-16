@@ -52,10 +52,10 @@ public class SecondFragment extends Fragment {
 
     private void showAlertDialog() {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Do you really want to go?")//FIXME to resources
-                .setPositiveButton("Yes", (dialogInterface, i) ->
-                        new Navigator(getParentFragmentManager()).popBackStack())//FIXME new Navigator, to resources
-                .setNegativeButton("No", (dialogInterface, i) ->
+                .setTitle(R.string.question_to_user)//FIXME to resources FIXED
+                .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
+                        new Navigator(getParentFragmentManager()).popBackStack())//FIXME new Navigator, to resources FIXED
+                .setNegativeButton(R.string.negative_button, (dialogInterface, i) ->
                         Toast.makeText(requireActivity().getBaseContext(), "No!", Toast.LENGTH_SHORT).show())//FIXME
                 .show();
     }
