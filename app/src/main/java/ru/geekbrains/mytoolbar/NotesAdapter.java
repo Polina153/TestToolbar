@@ -1,6 +1,5 @@
 package ru.geekbrains.mytoolbar;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +12,12 @@ import java.util.ArrayList;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
-    private ArrayList<Note> dataSet;
+    private final ArrayList<Note> dataSet;
+    private final OnMyItemClickListener clickListener;
 
-    public NotesAdapter(ArrayList<Note> dataSet) {
+    public NotesAdapter(ArrayList<Note> dataSet, OnMyItemClickListener clickListener) {
         this.dataSet = dataSet;
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void setNewData(ArrayList<Note> dataSet) {
-        this.dataSet = dataSet;
-        notifyDataSetChanged();
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -35,9 +30,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.getNote().setText(dataSet.get(position).note);
-        viewHolder.getBody().setText(dataSet.get(position).body);
-        viewHolder.getDate().setText(dataSet.get(position).date);
+        viewHolder.bind(dataSet.get(position));
     }
 
     @Override
@@ -45,28 +38,33 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         return dataSet.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView note;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView noteTextView;
         private final TextView body;
         private final TextView date;
 
         public ViewHolder(View view) {
             super(view);
-            note = view.findViewById(R.id.text_view_note_title);
+            noteTextView = view.findViewById(R.id.text_view_note_title);
             body = view.findViewById(R.id.text_view_note_body);
             date = view.findViewById(R.id.text_view_date);
         }
 
-        public TextView getNote() {
-            return note;
+        void bind(Note note) {
+            noteTextView.setText(note.getNote());
+            body.setText(note.getBody());
+            date.setText(note.getDate());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onListItemClick(getLayoutPosition());
+                }
+            });
         }
+    }
 
-        public TextView getBody() {
-            return body;
-        }
-
-        public TextView getDate() {
-            return date;
-        }
+    interface OnMyItemClickListener {
+        void onListItemClick(int listItemPosition);
     }
 }
