@@ -3,6 +3,9 @@ package ru.geekbrains.mytoolbar;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -51,6 +54,22 @@ public class MyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         toolbarCreator.setActionBar(view, ((AppCompatActivity) requireActivity()), R.id.my_toolbar, false);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.cards_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            navigator.addFragment(SecondFragment.newInstance());
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public static Fragment newInstance() {
