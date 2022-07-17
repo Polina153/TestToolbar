@@ -3,12 +3,12 @@ package ru.geekbrains.mytoolbar;
 class Note {
 
     private final String note;
-    private final String noteBody;
+    private final String body;
     private final String date;
 
-    Note(String note, String noteBody, String date) {
+    Note(String note, String body, String date) {
         this.note = note;
-        this.noteBody = noteBody;
+        this.body = body;
         this.date = date;
     }
 
@@ -16,8 +16,8 @@ class Note {
         return note;
     }
 
-    String getNoteBody() {
-        return noteBody;
+    String getBody() {
+        return body;
     }
 
     String getDate() {
