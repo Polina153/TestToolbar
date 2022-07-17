@@ -12,31 +12,15 @@ public class ToolbarCreator {
                       AppCompatActivity activity,
                       int layoutItem,
                       Boolean hasButtonBack)
-                     // Boolean hasAddButton
-     {
+    // Boolean hasAddButton
+    {
         //TODO Move Toolbar creation in separate class
         //activity = ((AppCompatActivity) requireActivity());
         activity.setSupportActionBar(view.findViewById(layoutItem));
         ActionBar toolbar = activity.getSupportActionBar();
-        if (hasButtonBack && toolbar != null){
+        if (hasButtonBack && toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setHomeButtonEnabled(true);
         }
-   //     if (hasAddButton && toolbar != null){
-   //     }
     }
-
-/*
-
-    private void setActionBar(@NonNull View view) {
-        AppCompatActivity activity = ((AppCompatActivity) requireActivity());
-        activity.setSupportActionBar(view.findViewById(R.id.second_toolbar));
-        ActionBar toolbar = activity.getSupportActionBar();
-        if (toolbar != null) {
-            toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setHomeButtonEnabled(true);
-        }
-        setHasOptionsMenu(true);
-    }
-*/
 }
