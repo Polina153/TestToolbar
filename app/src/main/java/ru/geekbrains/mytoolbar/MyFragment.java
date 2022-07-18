@@ -18,11 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MyFragment extends Fragment implements NotesAdapter.OnMyItemClickListener {
+public class MyFragment extends Fragment {
 
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
 
+/*
     //FIXME Remove
     private final NotesAdapter.OnMyItemClickListener clickListener = new NotesAdapter.OnMyItemClickListener() {
 
@@ -37,6 +38,7 @@ public class MyFragment extends Fragment implements NotesAdapter.OnMyItemClickLi
     public void onListItemClick(int listItemPosition) {
         Toast.makeText(requireActivity(), "" + (listItemPosition + 1), Toast.LENGTH_SHORT).show();
     }
+*/
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -68,7 +70,9 @@ public class MyFragment extends Fragment implements NotesAdapter.OnMyItemClickLi
             String index = String.valueOf(i + 1);
             userNotes.add(new Note(index, "text", index));
         }
-        final NotesAdapter notesAdapter = new NotesAdapter(userNotes, this); //TODO move implementation back here
+        final NotesAdapter notesAdapter = new NotesAdapter(userNotes,
+                listItemPosition -> Toast.makeText(requireActivity(),
+                        "" + (listItemPosition + 1), Toast.LENGTH_SHORT).show()); //TODO move implementation back here
         recyclerView.setAdapter(notesAdapter);
     }
 
