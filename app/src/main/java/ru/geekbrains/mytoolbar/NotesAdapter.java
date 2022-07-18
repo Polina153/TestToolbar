@@ -52,7 +52,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         }
 
         void bind(Note note) {
-            noteTextView.setText(note.getNote());
+            noteTextView.setText(note.getTitle());
             body.setText(note.getBody());
             date.setText(note.getDate());
             itemView.setOnClickListener(new View.OnClickListener() {

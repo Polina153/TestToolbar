@@ -22,11 +22,19 @@
             app:title="@string/app_name"
             app:titleTextColor="@color/text_color"
             />
+
     </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -35,4 +43,12 @@
             android:hint="@string/note"
             />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/date_of_the_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        />
+
 </LinearLayout>
