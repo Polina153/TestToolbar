@@ -3,6 +3,7 @@
     <string name="question_to_user">Do you really want to go?</string>
     <string name="positive_button">Yes</string>
     <string name="negative_button">No</string>
+    <string name="negative_answer">No!</string>
     <string name="note">write your note here</string>
     <string name="title">Title</string>
     <string name="date">11.22.3333</string>

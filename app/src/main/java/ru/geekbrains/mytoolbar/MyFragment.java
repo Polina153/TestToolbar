@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +21,7 @@ public class MyFragment extends Fragment {
 
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
+    private NotesAdapter adapter;
 
 /*
     //FIXME Remove
@@ -49,7 +49,9 @@ public class MyFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.my_fragment, container, false);
 
     }
@@ -70,9 +72,13 @@ public class MyFragment extends Fragment {
             String index = String.valueOf(i + 1);
             userNotes.add(new Note(index, "text", index));
         }
-        final NotesAdapter notesAdapter = new NotesAdapter(userNotes,
-                listItemPosition -> Toast.makeText(requireActivity(),
-                        "" + (listItemPosition + 1), Toast.LENGTH_SHORT).show()); //TODO move implementation back here
+        NotesAdapter notesAdapter = new NotesAdapter(userNotes,
+                new NotesAdapter.OnMyItemClickListener() {
+                    @Override
+                    public void onListItemClick(int listItemPosition) {
+                        navigator.addFragment(SecondFragment.newInstance(listItemPosition));
+                    }
+                }); //TODO move implementation back here
         recyclerView.setAdapter(notesAdapter);
     }
 
@@ -85,7 +91,7 @@ public class MyFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            navigator.addFragment(SecondFragment.newInstance());
+            //navigator.addFragment(SecondFragment.newInstance());
             return true;
         }
 

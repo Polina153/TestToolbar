@@ -14,6 +14,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     private final ArrayList<Note> dataSet;
     private final OnMyItemClickListener clickListener;
+    private int listItemPosition;
 
     public NotesAdapter(ArrayList<Note> dataSet, OnMyItemClickListener clickListener) {
         this.dataSet = dataSet;
@@ -36,6 +37,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    public int getListItemPosition() {
+        return listItemPosition;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
