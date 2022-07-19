@@ -48,12 +48,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         private final TextView noteTextView;
         private final TextView body;
         private final TextView date;
+        private final TextView isImportant;
 
         public ViewHolder(View view) {
             super(view);
             noteTextView = view.findViewById(R.id.text_view_note_title);
             body = view.findViewById(R.id.text_view_note_body);
             date = view.findViewById(R.id.text_view_date);
+            isImportant = view.findViewById(R.id.is_important_checkbox);
         }
 
         void bind(Note note) {
@@ -63,13 +65,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    clickListener.onListItemClick(getLayoutPosition());
+                    clickListener.onListItemClick();
                 }
             });
         }
     }
 
     interface OnMyItemClickListener {
-        void onListItemClick(int listItemPosition);
+        void onListItemClick(String title, String body, String date, boolean isImportant);
     }
 }

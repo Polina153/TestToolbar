@@ -20,14 +20,12 @@ public class SecondFragment extends Fragment {
     private final static String POSITION_KEY = "POSITION_KEY";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
-    private static Bundle args;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         navigator = ((MainActivity) context).getNavigator();
         toolbarCreator = ((MainActivity) context).getToolbarCreator();
-        args = new Bundle();
     }
 
     @Nullable
@@ -48,9 +46,10 @@ public class SecondFragment extends Fragment {
         toolbarCreator.setButtonBack(activity.getSupportActionBar());
         EditText textOfTheNote = view.findViewById(R.id.body_of_note_edit_text);
         Bundle args = getArguments();
-        int position = args.getInt(String.valueOf(args));
-        textOfTheNote.setText(position);
-        args.putString(POSITION_KEY, String.valueOf(position));
+        if (args != null) {
+            int position = args.getInt(POSITION_KEY, -1);
+            textOfTheNote.setText(String.valueOf(position));
+        }
         setHasOptionsMenu(true);
     }
 
@@ -75,8 +74,9 @@ public class SecondFragment extends Fragment {
 
     public static SecondFragment newInstance(int listItemPosition) {
         SecondFragment secondFragment = new SecondFragment();
-        int bedaBedaIOgor4enie = args.getInt(String.valueOf(listItemPosition));
-        secondFragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putInt(POSITION_KEY, listItemPosition);
+        secondFragment.setArguments(bundle);
         return secondFragment;
     }
 }
