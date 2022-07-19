@@ -68,7 +68,7 @@ public class SecondFragment extends Fragment {
                 .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
                         navigator.popBackStack())
                 .setNegativeButton(R.string.negative_button, (dialogInterface, i) ->
-                        Toast.makeText(requireActivity().getBaseContext(), getString(R.string.negative_answer), Toast.LENGTH_SHORT).show())//FIXME
+                        Toast.makeText(requireActivity().getBaseContext(), getString(R.string.negative_answer), Toast.LENGTH_SHORT).show())
                 .show();
     }
 

@@ -21,24 +21,6 @@ public class MyFragment extends Fragment {
 
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
-    private NotesAdapter adapter;
-
-/*
-    //FIXME Remove
-    private final NotesAdapter.OnMyItemClickListener clickListener = new NotesAdapter.OnMyItemClickListener() {
-
-        @Override
-        public void onListItemClick(int listItemPosition) {
-            Toast.makeText(requireActivity(), "" + (listItemPosition + 1), Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    //FIXME Remove
-    @Override
-    public void onListItemClick(int listItemPosition) {
-        Toast.makeText(requireActivity(), "" + (listItemPosition + 1), Toast.LENGTH_SHORT).show();
-    }
-*/
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -78,7 +60,7 @@ public class MyFragment extends Fragment {
                     public void onListItemClick(int listItemPosition) {
                         navigator.addFragment(SecondFragment.newInstance(listItemPosition));
                     }
-                }); //TODO move implementation back here
+                });
         recyclerView.setAdapter(notesAdapter);
     }
 
