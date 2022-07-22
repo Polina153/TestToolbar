@@ -8,11 +8,13 @@ class Note implements Parcelable {
     private final String title;
     private final String body;
     private final String date;
+    private final boolean isImportant;
 
-    Note(String title, String body, String date) {
+    Note(String title, String body, String date, Boolean isImportant) {
         this.title = title;
         this.body = body;
         this.date = date;
+        this.isImportant = isImportant;
     }
 
     String getTitle() {
@@ -27,10 +29,15 @@ class Note implements Parcelable {
         return date;
     }
 
+    boolean getIsImportant(){
+        return isImportant;
+    }
+
     Note(Parcel in) {
         title = in.readString();
         body = in.readString();
         date = in.readString();
+        isImportant = in.readByte() != 0;
     }
 
     @Override
@@ -43,6 +50,7 @@ class Note implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(body);
         parcel.writeString(date);
+        parcel.writeByte((byte) (isImportant ? 1 : 0));
     }
 
     static final Creator<Note> CREATOR = new Creator<Note>() {

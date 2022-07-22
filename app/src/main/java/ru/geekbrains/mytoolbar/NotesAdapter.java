@@ -3,6 +3,7 @@ package ru.geekbrains.mytoolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,16 +40,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         return dataSet.size();
     }
 
-    public int getListItemPosition() {
-        return listItemPosition;
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView noteTextView;
         private final TextView body;
         private final TextView date;
-        private final TextView isImportant;
+        private final CheckBox isImportant;
 
         public ViewHolder(View view) {
             super(view);
@@ -62,16 +60,17 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             noteTextView.setText(note.getTitle());
             body.setText(note.getBody());
             date.setText(note.getDate());
+            isImportant.setChecked(note.getIsImportant());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    clickListener.onListItemClick();
+                    clickListener.onListItemClick(listItemPosition);
                 }
             });
         }
     }
 
     interface OnMyItemClickListener {
-        void onListItemClick(String title, String body, String date, boolean isImportant);
+        void onListItemClick(int listItemPosition);
     }
 }

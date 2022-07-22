@@ -52,14 +52,16 @@ public class MyFragment extends Fragment {
         final ArrayList<Note> userNotes = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             String index = String.valueOf(i + 1);
-            userNotes.add(new Note(index, "text", index));
+            userNotes.add(new Note(index, "text", index, false));
         }
         NotesAdapter notesAdapter = new NotesAdapter(userNotes,
                 new NotesAdapter.OnMyItemClickListener() {
+
                     @Override
                     public void onListItemClick(int listItemPosition) {
                         navigator.addFragment(SecondFragment.newInstance(listItemPosition));
                     }
+
                 });
         recyclerView.setAdapter(notesAdapter);
     }
