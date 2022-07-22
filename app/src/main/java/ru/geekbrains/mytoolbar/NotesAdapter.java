@@ -64,6 +64,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    listItemPosition = ViewHolder.super.getLayoutPosition() + 1;
                     clickListener.onListItemClick(listItemPosition);
                 }
             });
