@@ -15,7 +15,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     private final ArrayList<Note> dataSet;
     private final OnMyItemClickListener clickListener;
-    private int listItemPosition;
 
     public NotesAdapter(ArrayList<Note> dataSet, OnMyItemClickListener clickListener) {
         this.dataSet = dataSet;
@@ -61,17 +60,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             body.setText(note.getBody());
             date.setText(note.getDate());
             isImportant.setChecked(note.getIsImportant());
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listItemPosition = ViewHolder.super.getLayoutPosition() + 1;
-                    clickListener.onListItemClick(listItemPosition);
-                }
-            });
+            String titleText = noteTextView.getText().toString();
+            String bodyText = body.getText().toString();
+            String dateText = date.getText().toString();
+            itemView.setOnClickListener(view -> clickListener.onListItemClick(
+                    titleText,
+                    bodyText,
+                    dateText,
+                    isImportant.isChecked()));
         }
     }
 
     interface OnMyItemClickListener {
-        void onListItemClick(int listItemPosition);
+        void onListItemClick(String title, String noteTextView, String date, boolean isImportant);
     }
 }

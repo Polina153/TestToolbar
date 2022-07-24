@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,10 @@ import androidx.fragment.app.Fragment;
 
 public class SecondFragment extends Fragment {
 
-    private final static String POSITION_KEY = "POSITION_KEY";
+    private final static String BODY_KEY = "BODY_KEY";
+    private final static String TITLE_KEY = "TITLE_KEY";
+    private final static String DATE_KEY = "DATE_KEY";
+    private final static String IMPORTANCE = "IMPORTANCE";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
 
@@ -45,10 +50,21 @@ public class SecondFragment extends Fragment {
                 activity);
         toolbarCreator.setButtonBack(activity.getSupportActionBar());
         EditText textOfTheNote = view.findViewById(R.id.body_of_note_edit_text);
+        TextView title = view.findViewById(R.id.title);
+        TextView date = view.findViewById(R.id.date_of_the_note);
+        CheckBox importance = view.findViewById(R.id.importance_second_fragment);
+
         Bundle args = getArguments();
         if (args != null) {
-            int position = args.getInt(POSITION_KEY, -1);
-            textOfTheNote.setText(String.valueOf(position));
+
+            String title2 = args.getString(TITLE_KEY);
+            title.setText(String.valueOf(title2));
+            String bodyOfTheNote = args.getString(BODY_KEY);
+            textOfTheNote.setText(bodyOfTheNote);
+            String date2 = args.getString(DATE_KEY);
+            date.setText(date2);
+            boolean important = args.getBoolean(IMPORTANCE);
+            importance.setChecked(important);
         }
         setHasOptionsMenu(true);
     }
@@ -72,10 +88,13 @@ public class SecondFragment extends Fragment {
                 .show();
     }
 
-    public static SecondFragment newInstance(int listItemPosition) {
+    public static SecondFragment newInstance(String title, String noteTextView, String date, boolean isImportant) {
         SecondFragment secondFragment = new SecondFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(POSITION_KEY, listItemPosition);
+        bundle.putString(TITLE_KEY,title);
+        bundle.putString(BODY_KEY, noteTextView);
+        bundle.putString(DATE_KEY, date);
+        bundle.putBoolean(IMPORTANCE, isImportant);
         secondFragment.setArguments(bundle);
         return secondFragment;
     }

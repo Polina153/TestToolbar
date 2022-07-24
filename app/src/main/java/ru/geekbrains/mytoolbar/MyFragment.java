@@ -58,10 +58,10 @@ public class MyFragment extends Fragment {
                 new NotesAdapter.OnMyItemClickListener() {
 
                     @Override
-                    public void onListItemClick(int listItemPosition) {
-                        navigator.addFragment(SecondFragment.newInstance(listItemPosition));
-                    }
+                    public void onListItemClick(String title, String noteTextView, String date, boolean isImportant) {
+                        navigator.addFragment(SecondFragment.newInstance(title, noteTextView, date, isImportant));
 
+                    }
                 });
         recyclerView.setAdapter(notesAdapter);
     }
