@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -54,6 +56,11 @@ public class MyFragment extends Fragment {
             String index = String.valueOf(i + 1);
             userNotes.add(new Note(index, "text", index, false));
         }
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(),  LinearLayoutManager.VERTICAL);
+        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
+
+        recyclerView.addItemDecoration(itemDecoration);
+
         NotesAdapter notesAdapter = new NotesAdapter(userNotes,
                 new NotesAdapter.OnMyItemClickListener() {
 
