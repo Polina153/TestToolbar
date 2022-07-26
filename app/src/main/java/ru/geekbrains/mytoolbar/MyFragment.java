@@ -1,5 +1,6 @@
 package ru.geekbrains.mytoolbar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -49,12 +50,13 @@ public class MyFragment extends Fragment {
         createRecyclerView(view);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void createRecyclerView(@NonNull View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
         final ArrayList<Note> userNotes = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             String index = String.valueOf(i + 1);
-            userNotes.add(new Note(index, "text", index, false));
+            userNotes.add(new Note("Title" + index, "text", false));
         }
         DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(),  LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));

@@ -3,17 +3,21 @@ package ru.geekbrains.mytoolbar;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 class Note implements Parcelable {
 
     private final String title;
     private final String body;
-    private final String date;
+    //private final String date;
     private final boolean isImportant;
 
-    Note(String title, String body, String date, Boolean isImportant) {
+    Note(String title, String body,/* String date,*/ Boolean isImportant) {
         this.title = title;
         this.body = body;
-        this.date = date;
+        //this.date = date;
         this.isImportant = isImportant;
     }
 
@@ -26,17 +30,17 @@ class Note implements Parcelable {
     }
 
     String getDate() {
-        return date;
+        return new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date());/*Calendar.getInstance().getTime().toString()*/
     }
 
-    boolean getIsImportant(){
+    boolean getIsImportant() {
         return isImportant;
     }
 
     Note(Parcel in) {
         title = in.readString();
         body = in.readString();
-        date = in.readString();
+        //date = in.readString();
         isImportant = in.readByte() != 0;
     }
 
@@ -49,7 +53,7 @@ class Note implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(title);
         parcel.writeString(body);
-        parcel.writeString(date);
+        //parcel.writeString(date);
         parcel.writeByte((byte) (isImportant ? 1 : 0));
     }
 
