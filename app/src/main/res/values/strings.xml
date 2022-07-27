@@ -11,4 +11,5 @@
     <string name="text_view">TextView</string>
     <string name="my_fragment_subtitle">Main screen</string>
     <string name="second_fragment_subtitle">Note</string>
+    <string name="add_button">Add</string>
 </resources>
