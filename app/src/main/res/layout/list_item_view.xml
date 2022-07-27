@@ -6,7 +6,8 @@
     android:layout_marginTop="@dimen/list_item_margin_top"
     android:background="@color/background_color"
     android:orientation="vertical"
-    android:paddingStart="15dp"
+    android:paddingStart="@dimen/list_item_padding"
+    android:paddingEnd="@dimen/list_item_padding"
     >
 
     <TextView
@@ -15,7 +16,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="32sp"
+        android:textSize="@dimen/list_item_title_size"
         android:textStyle="bold"
         tools:text="Длинный заголовок Длинный заголовокДлинный заголовокДлинный заголовокДлинный заголовок"
         />
@@ -27,29 +28,27 @@
         tools:text="Длинный заголовок Длинный заголовокДлинный заголовокДлинный заголовокДлинный заголовок"
         />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="10"
         >
 
         <TextView
             android:id="@+id/text_view_date"
-            android:layout_width="0dp"
-            android:textStyle="bold"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_gravity="center_vertical|start"
+            android:textStyle="bold"
             tools:text="10.11.2022"
             />
 
         <CheckBox
             android:id="@+id/is_important_checkbox"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_gravity="center_vertical|end"
             android:layoutDirection="rtl"
-            android:text="Impt"
+            android:text="@string/is_important_checkbox_title"
             />
-    </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

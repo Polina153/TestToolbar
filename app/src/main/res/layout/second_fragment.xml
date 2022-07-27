@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:subtitle="Main screen"
+            app:subtitle="@string/second_fragment_subtitle"
             app:subtitleTextColor="@color/white"
             app:title="@string/app_name"
             app:titleTextColor="@color/text_color"
@@ -33,17 +33,17 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_weight="2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:layout_weight="2"
+            android:text="@string/text_view"
             />
 
         <CheckBox
             android:id="@+id/importance_second_fragment"
             android:layout_width="wrap_content"
-            android:layout_gravity="end"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             />
     </LinearLayout>
 
@@ -58,7 +58,7 @@
         android:id="@+id/date_of_the_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:textStyle="bold"
         />
 
 </LinearLayout>

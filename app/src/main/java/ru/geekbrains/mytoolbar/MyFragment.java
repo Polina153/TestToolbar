@@ -64,14 +64,7 @@ public class MyFragment extends Fragment {
         recyclerView.addItemDecoration(itemDecoration);
 
         NotesAdapter notesAdapter = new NotesAdapter(userNotes,
-                new NotesAdapter.OnMyItemClickListener() {
-
-                    @Override
-                    public void onListItemClick(String title, String noteTextView, String date, boolean isImportant) {
-                        navigator.addFragment(SecondFragment.newInstance(title, noteTextView, date, isImportant));
-
-                    }
-                });
+                (title, noteTextView, date, isImportant) -> navigator.addFragment(SecondFragment.newInstance(title, noteTextView, date, isImportant)));
         recyclerView.setAdapter(notesAdapter);
     }
 

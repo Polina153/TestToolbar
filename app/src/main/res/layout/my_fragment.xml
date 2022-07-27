@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:subtitle="Main screen"
+            app:subtitle="@string/my_fragment_subtitle"
             app:subtitleTextColor="@color/white"
             app:title="@string/app_name"
             app:titleTextColor="@color/text_color"
@@ -27,7 +27,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_lines"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/recycler_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
