@@ -5,4 +5,5 @@
     <dimen name="list_item_padding">15dp</dimen>
     <dimen name="recycler_margin">8dp</dimen>
     <dimen name="separator_height">8dp</dimen>
+    <dimen name="second_fragment_title_layout_width">0dp</dimen>
 </resources>

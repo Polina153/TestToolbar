@@ -50,7 +50,7 @@ public class SecondFragment extends Fragment {
                 activity);
         toolbarCreator.setButtonBack(activity.getSupportActionBar());
         EditText textOfTheNote = view.findViewById(R.id.body_of_note_edit_text);
-        TextView title = view.findViewById(R.id.title);
+        EditText title = view.findViewById(R.id.title);
         TextView date = view.findViewById(R.id.date_of_the_note);
         CheckBox importance = view.findViewById(R.id.importance_second_fragment);
 
