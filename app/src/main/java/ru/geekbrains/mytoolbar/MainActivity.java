@@ -44,8 +44,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }*/
         navigator = new Navigator(getSupportFragmentManager());
-        navigator.addFragment(MyFragment.newInstance());
+        navigator.addFragment(MainFragment.newInstance());
     }
+
     public Navigator getNavigator() {
         return navigator;
     }

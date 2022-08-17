@@ -14,19 +14,33 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MyFragment extends Fragment {
+public class MainFragment extends Fragment {
 
     private static final String MY_ARRAY_LIST_KEY = "MY_ARRAY_LIST";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
     ArrayList<Note> userNotes = new ArrayList<>();
     private NotesAdapter notesAdapter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                Note result = bundle.getParcelable("bundleKey");
+
+            }
+        });
+
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -40,7 +54,7 @@ public class MyFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.my_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
 
     }
 
@@ -59,17 +73,17 @@ public class MyFragment extends Fragment {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void createRecyclerView(@NonNull View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);/*
         for (int i = 0; i < 1; i++) {
             userNotes.add(new Note("Title" + i, "text", false));
-        }
+        }*/
         DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
 
         recyclerView.addItemDecoration(itemDecoration);
 
         notesAdapter = new NotesAdapter(userNotes,
-                (title, noteTextView, date, isImportant) -> navigator.addFragment(SecondFragment.newInstance(title, noteTextView, date, isImportant)));
+                (title, noteTextView, date, isImportant) -> navigator.addFragment(DetailsFragment.newInstance(title, noteTextView, date, isImportant)));
         recyclerView.setAdapter(notesAdapter);
     }
 
@@ -97,6 +111,6 @@ public class MyFragment extends Fragment {
     }
 
     public static Fragment newInstance() {
-        return new MyFragment();
+        return new MainFragment();
     }
 }
