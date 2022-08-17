@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
-    private final ArrayList<Note> dataSet;
+    private ArrayList<Note> dataSet;
     private final OnMyItemClickListener clickListener;
 
     public NotesAdapter(ArrayList<Note> dataSet, OnMyItemClickListener clickListener) {
@@ -39,6 +39,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         return dataSet.size();
     }
 
+    public void setNewData(ArrayList<Note> userNotes) {
+        dataSet = userNotes;
+        notifyItemInserted(userNotes.size());
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

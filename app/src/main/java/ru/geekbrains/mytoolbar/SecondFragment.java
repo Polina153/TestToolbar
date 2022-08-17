@@ -88,10 +88,15 @@ public class SecondFragment extends Fragment {
                 .show();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     public static SecondFragment newInstance(String title, String noteTextView, String date, boolean isImportant) {
         SecondFragment secondFragment = new SecondFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(TITLE_KEY,title);
+        bundle.putString(TITLE_KEY, title);
         bundle.putString(BODY_KEY, noteTextView);
         bundle.putString(DATE_KEY, date);
         bundle.putBoolean(IMPORTANCE, isImportant);

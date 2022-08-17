@@ -22,8 +22,11 @@ import java.util.ArrayList;
 
 public class MyFragment extends Fragment {
 
+    private static final String MY_ARRAY_LIST_KEY = "MY_ARRAY_LIST";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
+    ArrayList<Note> userNotes = new ArrayList<>();
+    private NotesAdapter notesAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,7 +48,11 @@ public class MyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
-        toolbarCreator.setActionBar(view.findViewById(R.id.my_toolbar),activity);
+        toolbarCreator.setActionBar(view.findViewById(R.id.my_toolbar), activity);
+        if (savedInstanceState != null) {
+            //      userNotes = (ArrayList<Note>) savedInstanceState.getParcellableArrayList(MY_ARRAY_LIST_KEY);
+            userNotes = savedInstanceState.getParcelableArrayList(MY_ARRAY_LIST_KEY);
+        }
         setHasOptionsMenu(true);
         createRecyclerView(view);
     }
@@ -53,17 +60,15 @@ public class MyFragment extends Fragment {
     @SuppressLint("UseCompatLoadingForDrawables")
     private void createRecyclerView(@NonNull View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
-        final ArrayList<Note> userNotes = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            String index = String.valueOf(i + 1);
-            userNotes.add(new Note("Title" + index, "text", false));
+        for (int i = 0; i < 1; i++) {
+            userNotes.add(new Note("Title" + i, "text", false));
         }
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(),  LinearLayoutManager.VERTICAL);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
 
         recyclerView.addItemDecoration(itemDecoration);
 
-        NotesAdapter notesAdapter = new NotesAdapter(userNotes,
+        notesAdapter = new NotesAdapter(userNotes,
                 (title, noteTextView, date, isImportant) -> navigator.addFragment(SecondFragment.newInstance(title, noteTextView, date, isImportant)));
         recyclerView.setAdapter(notesAdapter);
     }
@@ -77,11 +82,18 @@ public class MyFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            //navigator.addFragment(SecondFragment.newInstance());
+            userNotes.add(new Note("Title" + userNotes.size(), "text", false));
+            notesAdapter.setNewData(userNotes);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelableArrayList(MY_ARRAY_LIST_KEY, userNotes);
+        super.onSaveInstanceState(outState);
     }
 
     public static Fragment newInstance() {
