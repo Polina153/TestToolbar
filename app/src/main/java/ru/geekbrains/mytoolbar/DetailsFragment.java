@@ -1,5 +1,7 @@
 package ru.geekbrains.mytoolbar;
 
+import static ru.geekbrains.mytoolbar.MainFragment.REQUEST_KEY;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,12 +21,16 @@ import androidx.fragment.app.Fragment;
 
 public class DetailsFragment extends Fragment {
 
-    private final static String BODY_KEY = "BODY_KEY";
-    private final static String TITLE_KEY = "TITLE_KEY";
-    private final static String DATE_KEY = "DATE_KEY";
-    private final static String IMPORTANCE = "IMPORTANCE";
+    public final static String BODY_KEY = "BODY_KEY";
+    public final static String TITLE_KEY = "TITLE_KEY";
+    public final static String DATE_KEY = "DATE_KEY";
+    public final static String IMPORTANCE = "IMPORTANCE";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
+    private EditText textOfTheNoteEditText;
+    private EditText titleEditText;
+    private TextView dateTextView;
+    private CheckBox isImportantCheckBox;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,22 +55,17 @@ public class DetailsFragment extends Fragment {
                 view.findViewById(R.id.second_toolbar),
                 activity);
         toolbarCreator.setButtonBack(activity.getSupportActionBar());
-        EditText textOfTheNote = view.findViewById(R.id.body_of_note_edit_text);
-        EditText title = view.findViewById(R.id.title);
-        TextView date = view.findViewById(R.id.date_of_the_note);
-        CheckBox importance = view.findViewById(R.id.importance_second_fragment);
+        textOfTheNoteEditText = view.findViewById(R.id.body_of_note_edit_text);
+        titleEditText = view.findViewById(R.id.title);
+        dateTextView = view.findViewById(R.id.date_of_the_note);
+        isImportantCheckBox = view.findViewById(R.id.importance_second_fragment);
 
         Bundle args = getArguments();
         if (args != null) {
-
-            String title2 = args.getString(TITLE_KEY);
-            title.setText(String.valueOf(title2));
-            String bodyOfTheNote = args.getString(BODY_KEY);
-            textOfTheNote.setText(bodyOfTheNote);
-            String date2 = args.getString(DATE_KEY);
-            date.setText(date2);
-            boolean important = args.getBoolean(IMPORTANCE);
-            importance.setChecked(important);
+            titleEditText.setText(args.getString(TITLE_KEY));
+            textOfTheNoteEditText.setText(args.getString(BODY_KEY));
+            dateTextView.setText(args.getString(DATE_KEY));
+            isImportantCheckBox.setChecked(args.getBoolean(IMPORTANCE));
         }
         setHasOptionsMenu(true);
     }
@@ -84,8 +85,11 @@ public class DetailsFragment extends Fragment {
                 .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
                 {
                     Bundle result = new Bundle();
-                    //    result.putParcelable("bundleKey", Note);
-                    getParentFragmentManager().setFragmentResult("requestKey", result);
+                    result.putString(TITLE_KEY, titleEditText.getText().toString());
+                    result.putString(BODY_KEY, textOfTheNoteEditText.getText().toString());
+                    result.putString(DATE_KEY, dateTextView.getText().toString());
+                    result.putBoolean(IMPORTANCE, isImportantCheckBox.isChecked());
+                    getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
                     navigator.popBackStack();
                 })
 

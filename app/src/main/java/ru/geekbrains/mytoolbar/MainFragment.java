@@ -1,5 +1,10 @@
 package ru.geekbrains.mytoolbar;
 
+import static ru.geekbrains.mytoolbar.DetailsFragment.BODY_KEY;
+import static ru.geekbrains.mytoolbar.DetailsFragment.DATE_KEY;
+import static ru.geekbrains.mytoolbar.DetailsFragment.IMPORTANCE;
+import static ru.geekbrains.mytoolbar.DetailsFragment.TITLE_KEY;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -14,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,23 +27,24 @@ import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
 
+    public static final String REQUEST_KEY = "requestKey";
     private static final String MY_ARRAY_LIST_KEY = "MY_ARRAY_LIST";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
-    ArrayList<Note> userNotes = new ArrayList<>();
+    private ArrayList<Note> userNotes = new ArrayList<>();
     private NotesAdapter notesAdapter;
+    private int positionOfClickedElement;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                Note result = bundle.getParcelable("bundleKey");
-
-            }
+        getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
+            String title = bundle.getString(TITLE_KEY);
+            String bodyOfTheNote = bundle.getString(BODY_KEY);
+            String date = bundle.getString(DATE_KEY);
+            boolean isImportant = bundle.getBoolean(IMPORTANCE);
+            notesAdapter.changeElement(new Note(title, bodyOfTheNote, isImportant), positionOfClickedElement);
         });
-
     }
 
     @Override
@@ -64,7 +69,6 @@ public class MainFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         toolbarCreator.setActionBar(view.findViewById(R.id.my_toolbar), activity);
         if (savedInstanceState != null) {
-            //      userNotes = (ArrayList<Note>) savedInstanceState.getParcellableArrayList(MY_ARRAY_LIST_KEY);
             userNotes = savedInstanceState.getParcelableArrayList(MY_ARRAY_LIST_KEY);
         }
         setHasOptionsMenu(true);
@@ -73,17 +77,20 @@ public class MainFragment extends Fragment {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void createRecyclerView(@NonNull View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);/*
-        for (int i = 0; i < 1; i++) {
-            userNotes.add(new Note("Title" + i, "text", false));
-        }*/
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
 
         recyclerView.addItemDecoration(itemDecoration);
 
         notesAdapter = new NotesAdapter(userNotes,
-                (title, noteTextView, date, isImportant) -> navigator.addFragment(DetailsFragment.newInstance(title, noteTextView, date, isImportant)));
+                new NotesAdapter.OnMyItemClickListener() {
+                    @Override
+                    public void onListItemClick(String title, String noteTextView, String date, boolean isImportant, int position) {
+                        positionOfClickedElement = position;
+                        navigator.addFragment(DetailsFragment.newInstance(title, noteTextView, date, isImportant));
+                    }
+                });
         recyclerView.setAdapter(notesAdapter);
     }
 

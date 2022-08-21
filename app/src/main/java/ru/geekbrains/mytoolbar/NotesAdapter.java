@@ -31,7 +31,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.bind(dataSet.get(position));
+        viewHolder.bind(dataSet.get(position), position);
     }
 
     @Override
@@ -41,7 +41,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public void setNewData(ArrayList<Note> userNotes) {
         dataSet = userNotes;
-        notifyItemInserted(userNotes.size());
+        notifyDataSetChanged();
+    }
+
+    public void changeElement(Note note, int position) {
+        dataSet.set(position, note);
+        notifyItemChanged(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,23 +64,21 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             isImportant = view.findViewById(R.id.is_important_checkbox);
         }
 
-        void bind(Note note) {
+        void bind(Note note, int position) {
             noteTextView.setText(note.getTitle());
             body.setText(note.getBody());
             date.setText(note.getDate());
             isImportant.setChecked(note.getIsImportant());
-            String titleText = noteTextView.getText().toString();
-            String bodyText = body.getText().toString();
-            String dateText = date.getText().toString();
             itemView.setOnClickListener(view -> clickListener.onListItemClick(
-                    titleText,
-                    bodyText,
-                    dateText,
-                    isImportant.isChecked()));
+                    noteTextView.getText().toString(),
+                    body.getText().toString(),
+                    date.getText().toString(),
+                    isImportant.isChecked(),
+                    position));
         }
     }
 
     interface OnMyItemClickListener {
-        void onListItemClick(String title, String noteTextView, String date, boolean isImportant);
+        void onListItemClick(String title, String noteTextView, String date, boolean isImportant, int position);
     }
 }
