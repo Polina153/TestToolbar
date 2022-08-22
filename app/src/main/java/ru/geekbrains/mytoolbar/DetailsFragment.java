@@ -25,11 +25,11 @@ public class DetailsFragment extends Fragment {
     public final static String TITLE_KEY = "TITLE_KEY";
     public final static String DATE_KEY = "DATE_KEY";
     public final static String IMPORTANCE = "IMPORTANCE";
+    public final static String NOTE_KEY = "NOTE_KEY";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
     private EditText textOfTheNoteEditText;
     private EditText titleEditText;
-    private TextView dateTextView;
     private CheckBox isImportantCheckBox;
 
     @Override
@@ -57,7 +57,7 @@ public class DetailsFragment extends Fragment {
         toolbarCreator.setButtonBack(activity.getSupportActionBar());
         textOfTheNoteEditText = view.findViewById(R.id.body_of_note_edit_text);
         titleEditText = view.findViewById(R.id.title);
-        dateTextView = view.findViewById(R.id.date_of_the_note);
+        TextView dateTextView = view.findViewById(R.id.date_of_the_note);
         isImportantCheckBox = view.findViewById(R.id.importance_second_fragment);
 
         Bundle args = getArguments();
@@ -84,11 +84,13 @@ public class DetailsFragment extends Fragment {
                 .setTitle(R.string.question_to_user)
                 .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
                 {
-                    Bundle result = new Bundle();
+                    Bundle result = new Bundle();/*
                     result.putString(TITLE_KEY, titleEditText.getText().toString());
                     result.putString(BODY_KEY, textOfTheNoteEditText.getText().toString());
                     result.putString(DATE_KEY, dateTextView.getText().toString());
-                    result.putBoolean(IMPORTANCE, isImportantCheckBox.isChecked());
+                    result.putBoolean(IMPORTANCE, isImportantCheckBox.isChecked());*/
+                    Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
+                    result.putParcelable(NOTE_KEY, note);
                     getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
                     navigator.popBackStack();
                 })

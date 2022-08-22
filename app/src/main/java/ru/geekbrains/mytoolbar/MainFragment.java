@@ -1,9 +1,6 @@
 package ru.geekbrains.mytoolbar;
 
-import static ru.geekbrains.mytoolbar.DetailsFragment.BODY_KEY;
-import static ru.geekbrains.mytoolbar.DetailsFragment.DATE_KEY;
-import static ru.geekbrains.mytoolbar.DetailsFragment.IMPORTANCE;
-import static ru.geekbrains.mytoolbar.DetailsFragment.TITLE_KEY;
+import static ru.geekbrains.mytoolbar.DetailsFragment.NOTE_KEY;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -37,16 +34,19 @@ public class MainFragment extends Fragment {
     private ArrayList<Note> userNotes = new ArrayList<>();
     private NotesAdapter notesAdapter;
     private int positionOfClickedElement;
+//    private SharedPreferences sharedPref = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        sharedPref = this.requireActivity().getSharedPreferences(MODE_PRIVATE).getClass();
         getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
-            String title = bundle.getString(TITLE_KEY);
+            /*String title = bundle.getString(TITLE_KEY);
             String bodyOfTheNote = bundle.getString(BODY_KEY);
             String date = bundle.getString(DATE_KEY);
-            boolean isImportant = bundle.getBoolean(IMPORTANCE);
-            notesAdapter.changeElement(new Note(title, bodyOfTheNote, isImportant), positionOfClickedElement);
+            boolean isImportant = bundle.getBoolean(IMPORTANCE);*/
+            Note note = bundle.getParcelable(NOTE_KEY);
+            notesAdapter.changeElement(note, positionOfClickedElement);
         });
     }
 
