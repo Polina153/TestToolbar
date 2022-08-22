@@ -1,9 +1,11 @@
 package ru.geekbrains.mytoolbar;
 
+import static android.content.Context.MODE_PRIVATE;
 import static ru.geekbrains.mytoolbar.DetailsFragment.NOTE_KEY;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,12 +36,14 @@ public class MainFragment extends Fragment {
     private ArrayList<Note> userNotes = new ArrayList<>();
     private NotesAdapter notesAdapter;
     private int positionOfClickedElement;
-//    private SharedPreferences sharedPref = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        sharedPref = this.requireActivity().getSharedPreferences(MODE_PRIVATE).getClass();
+        SharedPreferences sharedPref = requireActivity().getPreferences(MODE_PRIVATE);
+        sharedPref.edit().putBoolean("sd", true).apply();
+        //Toast.makeText(requireContext(), String.valueOf(sharedPref.getBoolean("sd", true)), Toast.LENGTH_SHORT).show();
+
         getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
             /*String title = bundle.getString(TITLE_KEY);
             String bodyOfTheNote = bundle.getString(BODY_KEY);

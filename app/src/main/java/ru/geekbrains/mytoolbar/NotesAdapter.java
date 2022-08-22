@@ -44,7 +44,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void changeElement(Note note, int position) {
+    public void changeElement(@NonNull Note note, int position) {
         dataSet.set(position, note);
         notifyItemChanged(position);
     }
