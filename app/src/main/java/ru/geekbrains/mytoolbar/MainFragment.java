@@ -25,6 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+//TODO Receive class Note instead of different properties
+//TODO Save all data to SharedPreferences
+
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";
