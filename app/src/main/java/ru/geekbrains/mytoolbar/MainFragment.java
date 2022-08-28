@@ -31,14 +31,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 //TODO Create separate class to work with SharedPreferences
+//TODO Refactor
+//TODO Hide keyboard when return back
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";
-    //private static final String MY_ARRAY_LIST_KEY = "MY_ARRAY_LIST";
     private static final String MY_SHARED_PREF_KEY = "MY_SHARED_PREF_KEY";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
-    private ArrayList<Note> userNotes = new ArrayList<>();
     private NotesAdapter notesAdapter;
     private int positionOfClickedElement;
     private SharedPreferences sharedPref;
@@ -47,25 +47,22 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPref = requireActivity().getPreferences(MODE_PRIVATE);
-
         getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
             Note note = bundle.getParcelable(NOTE_KEY);
-            notesAdapter.setNewData(userNotes);
-            String jsonNotes = new GsonBuilder().create().toJson(userNotes);
-            sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
-            //TODO Актуализировать список заметок
-            notesAdapter.changeElement(note, positionOfClickedElement);
+            try {
+                Type type = new TypeToken<ArrayList<Note>>() {
+                }.getType();
+                String savedNotes = sharedPref.getString(MY_SHARED_PREF_KEY, null);
+                if (savedNotes == null) return;
+                ArrayList<Note> userNotes = new GsonBuilder().create().fromJson(savedNotes, type);
+                userNotes.set(positionOfClickedElement, note);
+                String jsonNotes = new GsonBuilder().create().toJson(userNotes);
+                sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
+                notesAdapter.changeElement(note, positionOfClickedElement);
+            } catch (JsonSyntaxException e) {
+                Toast.makeText(requireContext(), getString(R.string.mistake), Toast.LENGTH_SHORT).show();
+            }
         });
-
-        try {
-            Type type = new TypeToken<ArrayList<Note>>() {
-            }.getType();
-            String savedNotes = sharedPref.getString(MY_SHARED_PREF_KEY, null);
-            userNotes = new GsonBuilder().create().fromJson(savedNotes, type);
-        } catch (JsonSyntaxException e) {
-            Toast.makeText(requireContext(), getString(R.string.mistake), Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     @Override
@@ -101,20 +98,27 @@ public class MainFragment extends Fragment {
 
         recyclerView.addItemDecoration(itemDecoration);
 
-        notesAdapter = new NotesAdapter(userNotes,
-                new NotesAdapter.OnMyItemClickListener() {
-                    @Override
-                    public void onListItemClick(Note note, int position) {
-                        positionOfClickedElement = position;
-                        navigator.addFragment(DetailsFragment.newInstance(note));
-                    }
-                });
-        /*@Override
-        public void onListItemClick (Note note,int position){
-                        positionOfClickedElement = position;
-                        navigator.addFragment(DetailsFragment.newInstance(note));
-                    }
-                });*/
+        try {
+            Type type = new TypeToken<ArrayList<Note>>() {
+            }.getType();
+            String savedNotes = sharedPref.getString(MY_SHARED_PREF_KEY, null);
+            ArrayList<Note> userNotes;
+            if (savedNotes == null) {
+                userNotes = new ArrayList<>();
+            } else {
+                userNotes = new GsonBuilder().create().fromJson(savedNotes, type);
+            }
+            notesAdapter = new NotesAdapter(userNotes,
+                    new NotesAdapter.OnMyItemClickListener() {
+                        @Override
+                        public void onListItemClick(Note note, int position) {
+                            positionOfClickedElement = position;
+                            navigator.addFragment(DetailsFragment.newInstance(note));
+                        }
+                    });
+        } catch (JsonSyntaxException e) {
+            Toast.makeText(requireContext(), getString(R.string.mistake), Toast.LENGTH_SHORT).show();
+        }
         recyclerView.setAdapter(notesAdapter);
     }
 
@@ -127,11 +131,27 @@ public class MainFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-
-            userNotes.add(new Note("Title" + userNotes.size(), "text", false));
-            notesAdapter.setNewData(userNotes);
-            String jsonNotes = new GsonBuilder().create().toJson(userNotes);
-            sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
+            try {
+                Type type = new TypeToken<ArrayList<Note>>() {
+                }.getType();
+                String sharedPrefString = sharedPref.getString(MY_SHARED_PREF_KEY, null);
+                ArrayList<Note> userNotes;
+                String jsonNotes;
+                if (sharedPrefString == null) {
+                    userNotes = new ArrayList<>();
+                    userNotes.add(new Note("Title" + userNotes.size(), "text", false));
+                    jsonNotes = new GsonBuilder().create().toJson(userNotes);
+                    sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
+                } else {
+                    userNotes = new GsonBuilder().create().fromJson(sharedPrefString, type);
+                    userNotes.add(new Note("Title" + userNotes.size(), "text", false));
+                    jsonNotes = new GsonBuilder().create().toJson(userNotes);
+                }
+                sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
+                notesAdapter.setNewData(userNotes);
+            } catch (JsonSyntaxException e) {
+                Toast.makeText(requireContext(), getString(R.string.mistake), Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
