@@ -12,4 +12,5 @@
     <string name="my_fragment_subtitle">Main screen</string>
     <string name="second_fragment_subtitle">Note</string>
     <string name="add_button">Add</string>
+    <string name="mistake">Ошибка трансформации</string>
 </resources>

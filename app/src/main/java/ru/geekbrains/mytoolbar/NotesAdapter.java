@@ -7,6 +7,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private ArrayList<Note> dataSet;
     private final OnMyItemClickListener clickListener;
 
-    public NotesAdapter(ArrayList<Note> dataSet, OnMyItemClickListener clickListener) {
+    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener) {
         this.dataSet = dataSet;
         this.clickListener = clickListener;
     }
@@ -69,16 +70,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             body.setText(note.getBody());
             date.setText(note.getDate());
             isImportant.setChecked(note.getIsImportant());
-            itemView.setOnClickListener(view -> clickListener.onListItemClick(
-                    noteTextView.getText().toString(),
+            itemView.setOnClickListener(view -> {
+                clickListener.onListItemClick(
+                        note,
+                        position);
+            });
+                    /*noteTextView.getText().toString(),
                     body.getText().toString(),
                     date.getText().toString(),
                     isImportant.isChecked(),
-                    position));
+                    position));*/
         }
     }
 
     interface OnMyItemClickListener {
-        void onListItemClick(String title, String noteTextView, String date, boolean isImportant, int position);
+        void onListItemClick(Note note, int position);
     }
 }

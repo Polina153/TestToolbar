@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,36 +23,49 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-//TODO Receive class Note instead of different properties
-//TODO Save all data to SharedPreferences
-
+//TODO Create separate class to work with SharedPreferences
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";
-    private static final String MY_ARRAY_LIST_KEY = "MY_ARRAY_LIST";
+    //private static final String MY_ARRAY_LIST_KEY = "MY_ARRAY_LIST";
+    private static final String MY_SHARED_PREF_KEY = "MY_SHARED_PREF_KEY";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
     private ArrayList<Note> userNotes = new ArrayList<>();
     private NotesAdapter notesAdapter;
     private int positionOfClickedElement;
+    private SharedPreferences sharedPref;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPref = requireActivity().getPreferences(MODE_PRIVATE);
-        sharedPref.edit().putBoolean("sd", true).apply();
-        //Toast.makeText(requireContext(), String.valueOf(sharedPref.getBoolean("sd", true)), Toast.LENGTH_SHORT).show();
+        sharedPref = requireActivity().getPreferences(MODE_PRIVATE);
 
         getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
-            /*String title = bundle.getString(TITLE_KEY);
-            String bodyOfTheNote = bundle.getString(BODY_KEY);
-            String date = bundle.getString(DATE_KEY);
-            boolean isImportant = bundle.getBoolean(IMPORTANCE);*/
             Note note = bundle.getParcelable(NOTE_KEY);
+            notesAdapter.setNewData(userNotes);
+            String jsonNotes = new GsonBuilder().create().toJson(userNotes);
+            sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
+            //TODO Актуализировать список заметок
             notesAdapter.changeElement(note, positionOfClickedElement);
         });
+
+        try {
+            Type type = new TypeToken<ArrayList<Note>>() {
+            }.getType();
+            String savedNotes = sharedPref.getString(MY_SHARED_PREF_KEY, null);
+            userNotes = new GsonBuilder().create().fromJson(savedNotes, type);
+        } catch (JsonSyntaxException e) {
+            Toast.makeText(requireContext(), getString(R.string.mistake), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -75,9 +89,6 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         toolbarCreator.setActionBar(view.findViewById(R.id.my_toolbar), activity);
-        if (savedInstanceState != null) {
-            userNotes = savedInstanceState.getParcelableArrayList(MY_ARRAY_LIST_KEY);
-        }
         setHasOptionsMenu(true);
         createRecyclerView(view);
     }
@@ -93,11 +104,17 @@ public class MainFragment extends Fragment {
         notesAdapter = new NotesAdapter(userNotes,
                 new NotesAdapter.OnMyItemClickListener() {
                     @Override
-                    public void onListItemClick(String title, String noteTextView, String date, boolean isImportant, int position) {
+                    public void onListItemClick(Note note, int position) {
                         positionOfClickedElement = position;
-                        navigator.addFragment(DetailsFragment.newInstance(title, noteTextView, date, isImportant));
+                        navigator.addFragment(DetailsFragment.newInstance(note));
                     }
                 });
+        /*@Override
+        public void onListItemClick (Note note,int position){
+                        positionOfClickedElement = position;
+                        navigator.addFragment(DetailsFragment.newInstance(note));
+                    }
+                });*/
         recyclerView.setAdapter(notesAdapter);
     }
 
@@ -110,18 +127,14 @@ public class MainFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
+
             userNotes.add(new Note("Title" + userNotes.size(), "text", false));
             notesAdapter.setNewData(userNotes);
+            String jsonNotes = new GsonBuilder().create().toJson(userNotes);
+            sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelableArrayList(MY_ARRAY_LIST_KEY, userNotes);
-        super.onSaveInstanceState(outState);
     }
 
     public static Fragment newInstance() {

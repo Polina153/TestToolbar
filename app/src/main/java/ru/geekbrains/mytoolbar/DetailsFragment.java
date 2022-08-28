@@ -84,11 +84,7 @@ public class DetailsFragment extends Fragment {
                 .setTitle(R.string.question_to_user)
                 .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
                 {
-                    Bundle result = new Bundle();/*
-                    result.putString(TITLE_KEY, titleEditText.getText().toString());
-                    result.putString(BODY_KEY, textOfTheNoteEditText.getText().toString());
-                    result.putString(DATE_KEY, dateTextView.getText().toString());
-                    result.putBoolean(IMPORTANCE, isImportantCheckBox.isChecked());*/
+                    Bundle result = new Bundle();
                     Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
                     result.putParcelable(NOTE_KEY, note);
                     getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
@@ -105,13 +101,13 @@ public class DetailsFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    public static DetailsFragment newInstance(String title, String noteTextView, String date, boolean isImportant) {
+    public static DetailsFragment newInstance(Note note) {
         DetailsFragment detailsFragment = new DetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(TITLE_KEY, title);
-        bundle.putString(BODY_KEY, noteTextView);
-        bundle.putString(DATE_KEY, date);
-        bundle.putBoolean(IMPORTANCE, isImportant);
+        bundle.putString(TITLE_KEY, note.getTitle());
+        bundle.putString(BODY_KEY, note.getBody());
+        bundle.putString(DATE_KEY, note.getDate());
+        bundle.putBoolean(IMPORTANCE, note.getIsImportant());
         detailsFragment.setArguments(bundle);
         return detailsFragment;
     }
