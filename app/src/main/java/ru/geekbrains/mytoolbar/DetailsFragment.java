@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -74,6 +75,11 @@ public class DetailsFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             showAlertDialog();
+            View view = this.requireActivity().getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -105,6 +111,7 @@ public class DetailsFragment extends Fragment {
     public static DetailsFragment newInstance(Note note) {
         DetailsFragment detailsFragment = new DetailsFragment();
         Bundle bundle = new Bundle();
+        //bundle.putParcelable(NOTE_IS_CLICKED_KEY, note);
         bundle.putString(TITLE_KEY, note.getTitle());
         bundle.putString(BODY_KEY, note.getBody());
         bundle.putString(DATE_KEY, note.getDate());

@@ -32,11 +32,12 @@ import java.util.ArrayList;
 
 //TODO Create separate class to work with SharedPreferences
 //TODO Refactor
-//TODO Hide keyboard when return back
+//TODO Hide keyboard when return back DONE
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";
     private static final String MY_SHARED_PREF_KEY = "MY_SHARED_PREF_KEY";
+    static final String NOTE_IS_CLICKED_KEY = "NOTE_IS_CLICKED_KEY";
     private Navigator navigator;
     private ToolbarCreator toolbarCreator;
     private NotesAdapter notesAdapter;
@@ -113,6 +114,10 @@ public class MainFragment extends Fragment {
                         @Override
                         public void onListItemClick(Note note, int position) {
                             positionOfClickedElement = position;
+                            String jsonNotes = new GsonBuilder().create().toJson(userNotes);
+                            userNotes.set(positionOfClickedElement, note);
+                            sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
+                            notesAdapter.changeElement(note, positionOfClickedElement);
                             navigator.addFragment(DetailsFragment.newInstance(note));
                         }
                     });
