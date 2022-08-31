@@ -107,7 +107,7 @@ public class DetailsFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    //TODO putParcellable
+    //TODO putParcelable
     public static DetailsFragment newInstance(Note note) {
         DetailsFragment detailsFragment = new DetailsFragment();
         Bundle bundle = new Bundle();

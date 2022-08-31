@@ -13,4 +13,6 @@
     <string name="second_fragment_subtitle">Note</string>
     <string name="add_button">Add</string>
     <string name="mistake">Ошибка трансформации</string>
+    <string name="default_text">text</string>
+    <string name="default_title">Title</string>
 </resources>

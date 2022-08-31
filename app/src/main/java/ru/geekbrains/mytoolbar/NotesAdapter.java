@@ -16,10 +16,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     private ArrayList<Note> dataSet;
     private final OnMyItemClickListener clickListener;
+    private final ISharedPreferences sharedPref;
 
-    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener) {
+    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener, @NonNull ISharedPreferences sharedPref) {
         this.dataSet = dataSet;
         this.clickListener = clickListener;
+        this.sharedPref = sharedPref;
     }
 
     @Override
@@ -71,15 +73,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             date.setText(note.getDate());
             isImportant.setChecked(note.getIsImportant());
             itemView.setOnClickListener(view -> {
+                Note newNote = new Note(note.getTitle(), note.getBody(), isImportant.isChecked());
+                //TODO Save isImportant
+                sharedPref.saveNote(newNote, position);
                 clickListener.onListItemClick(
-                        note,
+                        newNote,
                         position);
+
             });
-                    /*noteTextView.getText().toString(),
-                    body.getText().toString(),
-                    date.getText().toString(),
-                    isImportant.isChecked(),
-                    position));*/
         }
     }
 

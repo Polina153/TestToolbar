@@ -5,7 +5,6 @@ import static ru.geekbrains.mytoolbar.DetailsFragment.NOTE_KEY;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,22 +24,22 @@ import androidx.recyclerview.widget.RecyclerView;
 //TODO Create separate class to work with SharedPreferences
 //TODO Refactor
 //TODO Hide keyboard when return back DONE
-public class MainFragment extends Fragment implements SharedPreferencesStuff {
+public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";
-    static Navigator navigator;
+    private Navigator navigator;
     private ToolbarCreator toolbarCreator;
-    static NotesAdapter notesAdapter;
-    static int positionOfClickedElement;
-    static SharedPreferences sharedPref;
+    private NotesAdapter notesAdapter;
+    private ISharedPreferences sharedPref;
+    private int positionOfClickedElement;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPref = requireActivity().getPreferences(MODE_PRIVATE);
+        sharedPref = new SharedPreferencesImpl(requireActivity().getPreferences(MODE_PRIVATE));
         getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
             Note note = bundle.getParcelable(NOTE_KEY);
-            receiveChangesFromDetailsFragment(note);
+            sharedPref.saveNote(note, positionOfClickedElement);
         });
     }
 
@@ -74,10 +73,12 @@ public class MainFragment extends Fragment implements SharedPreferencesStuff {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_lines);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
-
         recyclerView.addItemDecoration(itemDecoration);
-
-        creatingRecyclerView();
+        notesAdapter = new NotesAdapter(sharedPref.getNotes(),
+                (note, position) -> {
+                    positionOfClickedElement = position;
+                    navigator.addFragment(DetailsFragment.newInstance(note));
+                }, sharedPref);
         recyclerView.setAdapter(notesAdapter);
     }
 
@@ -90,7 +91,7 @@ public class MainFragment extends Fragment implements SharedPreferencesStuff {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            addingNewNote();
+            sharedPref.saveNewNote(getString(R.string.default_title), getString(R.string.default_text));
             return true;
         }
         return super.onOptionsItemSelected(item);
