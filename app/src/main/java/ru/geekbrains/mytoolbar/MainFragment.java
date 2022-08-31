@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,26 +22,17 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-
 //TODO Create separate class to work with SharedPreferences
 //TODO Refactor
 //TODO Hide keyboard when return back DONE
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements SharedPreferencesStuff {
 
     public static final String REQUEST_KEY = "requestKey";
-    private static final String MY_SHARED_PREF_KEY = "MY_SHARED_PREF_KEY";
-    static final String NOTE_IS_CLICKED_KEY = "NOTE_IS_CLICKED_KEY";
-    private Navigator navigator;
+    static Navigator navigator;
     private ToolbarCreator toolbarCreator;
-    private NotesAdapter notesAdapter;
-    private int positionOfClickedElement;
-    private SharedPreferences sharedPref;
+    static NotesAdapter notesAdapter;
+    static int positionOfClickedElement;
+    static SharedPreferences sharedPref;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,19 +40,7 @@ public class MainFragment extends Fragment {
         sharedPref = requireActivity().getPreferences(MODE_PRIVATE);
         getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
             Note note = bundle.getParcelable(NOTE_KEY);
-            try {
-                Type type = new TypeToken<ArrayList<Note>>() {
-                }.getType();
-                String savedNotes = sharedPref.getString(MY_SHARED_PREF_KEY, null);
-                if (savedNotes == null) return;
-                ArrayList<Note> userNotes = new GsonBuilder().create().fromJson(savedNotes, type);
-                userNotes.set(positionOfClickedElement, note);
-                String jsonNotes = new GsonBuilder().create().toJson(userNotes);
-                sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
-                notesAdapter.changeElement(note, positionOfClickedElement);
-            } catch (JsonSyntaxException e) {
-                Toast.makeText(requireContext(), getString(R.string.mistake), Toast.LENGTH_SHORT).show();
-            }
+            receiveChangesFromDetailsFragment(note);
         });
     }
 
@@ -99,31 +77,7 @@ public class MainFragment extends Fragment {
 
         recyclerView.addItemDecoration(itemDecoration);
 
-        try {
-            Type type = new TypeToken<ArrayList<Note>>() {
-            }.getType();
-            String savedNotes = sharedPref.getString(MY_SHARED_PREF_KEY, null);
-            ArrayList<Note> userNotes;
-            if (savedNotes == null) {
-                userNotes = new ArrayList<>();
-            } else {
-                userNotes = new GsonBuilder().create().fromJson(savedNotes, type);
-            }
-            notesAdapter = new NotesAdapter(userNotes,
-                    new NotesAdapter.OnMyItemClickListener() {
-                        @Override
-                        public void onListItemClick(Note note, int position) {
-                            positionOfClickedElement = position;
-                            String jsonNotes = new GsonBuilder().create().toJson(userNotes);
-                            userNotes.set(positionOfClickedElement, note);
-                            sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
-                            notesAdapter.changeElement(note, positionOfClickedElement);
-                            navigator.addFragment(DetailsFragment.newInstance(note));
-                        }
-                    });
-        } catch (JsonSyntaxException e) {
-            Toast.makeText(requireContext(), getString(R.string.mistake), Toast.LENGTH_SHORT).show();
-        }
+        creatingRecyclerView();
         recyclerView.setAdapter(notesAdapter);
     }
 
@@ -136,27 +90,7 @@ public class MainFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            try {
-                Type type = new TypeToken<ArrayList<Note>>() {
-                }.getType();
-                String sharedPrefString = sharedPref.getString(MY_SHARED_PREF_KEY, null);
-                ArrayList<Note> userNotes;
-                String jsonNotes;
-                if (sharedPrefString == null) {
-                    userNotes = new ArrayList<>();
-                    userNotes.add(new Note("Title" + userNotes.size(), "text", false));
-                    jsonNotes = new GsonBuilder().create().toJson(userNotes);
-                    sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
-                } else {
-                    userNotes = new GsonBuilder().create().fromJson(sharedPrefString, type);
-                    userNotes.add(new Note("Title" + userNotes.size(), "text", false));
-                    jsonNotes = new GsonBuilder().create().toJson(userNotes);
-                }
-                sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
-                notesAdapter.setNewData(userNotes);
-            } catch (JsonSyntaxException e) {
-                Toast.makeText(requireContext(), getString(R.string.mistake), Toast.LENGTH_SHORT).show();
-            }
+            addingNewNote();
             return true;
         }
         return super.onOptionsItemSelected(item);
