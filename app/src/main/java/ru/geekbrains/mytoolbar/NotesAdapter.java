@@ -52,6 +52,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         notifyItemChanged(position);
     }
 
+    public void addNewElement(@NonNull Note note) {
+        dataSet.add(note);
+        notifyDataSetChanged();
+    }
     //TODO addNewElement
 
     public class ViewHolder extends RecyclerView.ViewHolder {

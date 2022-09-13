@@ -21,9 +21,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//TODO Create separate class to work with SharedPreferences
+//TODO Save all changes correctly
 //TODO Refactor
-//TODO Hide keyboard when return back DONE
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";
@@ -40,6 +39,7 @@ public class MainFragment extends Fragment {
         getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
             Note note = bundle.getParcelable(NOTE_KEY);
             sharedPref.saveNote(note, positionOfClickedElement);
+            notesAdapter.changeElement(note, positionOfClickedElement);
         });
     }
 
@@ -56,7 +56,6 @@ public class MainFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main, container, false);
-
     }
 
     @Override
@@ -74,11 +73,13 @@ public class MainFragment extends Fragment {
         DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
         recyclerView.addItemDecoration(itemDecoration);
-        notesAdapter = new NotesAdapter(sharedPref.getNotes(),
-                (note, position) -> {
-                    positionOfClickedElement = position;
-                    navigator.addFragment(DetailsFragment.newInstance(note));
-                }, sharedPref);
+        if (notesAdapter == null) {
+            notesAdapter = new NotesAdapter(sharedPref.getNotes(),
+                    (note, position) -> {
+                        positionOfClickedElement = position;
+                        navigator.addFragment(DetailsFragment.newInstance(note));
+                    }, sharedPref);
+        }
         recyclerView.setAdapter(notesAdapter);
     }
 
