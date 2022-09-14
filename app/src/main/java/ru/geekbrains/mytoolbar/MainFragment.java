@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 //TODO Save all changes correctly
 //TODO Refactor
+//FIXME Add listItem by tapping menu button
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";

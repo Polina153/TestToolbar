@@ -4,6 +4,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 import static ru.geekbrains.mytoolbar.MainFragment.REQUEST_KEY;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,8 +23,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-//TODO Bring back keyboard if user changes his mind
-//TODO OnBackPressedDispatcher
 public class DetailsFragment extends Fragment {
 
     /* public final static String BODY_KEY = "BODY_KEY";
@@ -37,17 +36,17 @@ public class DetailsFragment extends Fragment {
     private EditText textOfTheNoteEditText;
     private EditText titleEditText;
     private CheckBox isImportantCheckBox;
+    private boolean isKeyboardActive = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         navigator = ((MainActivity) context).getNavigator();
         toolbarCreator = ((MainActivity) context).getToolbarCreator();
-        OnBackPressedCallback callback = new OnBackPressedCallback(
-                true
-        ) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                isKeyboardActive = false;
                 showAlertDialog();
             }
         };
@@ -75,10 +74,11 @@ public class DetailsFragment extends Fragment {
         textOfTheNoteEditText = view.findViewById(R.id.body_of_note_edit_text);
 
         titleEditText = view.findViewById(R.id.title);
-        /*должно показыввать клавиатуру когда фрагмент в фокусе
+        //должно показыввать клавиатуру когда фрагмент в фокусе
         textOfTheNoteEditText.requestFocus();
         InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(INPUT_METHOD_SERVICE);
-        imm.showSoftInput(textOfTheNoteEditText, InputMethodManager.SHOW_IMPLICIT);*/
+        imm.showSoftInput(textOfTheNoteEditText, InputMethodManager.SHOW_IMPLICIT);
+
         TextView dateTextView = view.findViewById(R.id.date_of_the_note);
         isImportantCheckBox = view.findViewById(R.id.importance_second_fragment);
 
@@ -96,6 +96,7 @@ public class DetailsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            setKeyboardStatus();
             showAlertDialog();
             View view = this.requireActivity().getCurrentFocus();
             if (view != null) {
@@ -108,6 +109,8 @@ public class DetailsFragment extends Fragment {
     }
 
     private void showAlertDialog() {
+        //Fixme FragmentDialog
+        //TODO Прочитать про FragmentDialog, какие виды FragmentDialog бывают и объяснить, почему нужно использовать FragmentDialog вместо AlertDialog
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.question_to_user)
                 .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
@@ -119,27 +122,29 @@ public class DetailsFragment extends Fragment {
                     navigator.popBackStack();
                 })
 
-                .setNegativeButton(R.string.negative_button, (dialogInterface, i) ->
-                        Toast.makeText(requireActivity().getBaseContext(), getString(R.string.negative_answer), Toast.LENGTH_SHORT).show())
+                .setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setKeyboardStatus();
+                        Toast.makeText(DetailsFragment.this.requireActivity().getBaseContext(), DetailsFragment.this.getString(R.string.negative_answer), Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setOnCancelListener(dialog -> showSoftKeyboard())
+                .setOnDismissListener(dialogInterface -> showSoftKeyboard())
                 .show();
-        /*
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-
-        уже ближе, но надо засунуть в негатив баттн конкретно!
-
-        textOfTheNoteEditText.postDelayed((Runnable) () -> {
-            textOfTheNoteEditText.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, 0f, 0f, 0));
-            textOfTheNoteEditText.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, 0f, 0f, 0));
-        }, 200);*/
-        /*InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        РАБОТАЕТ РОВНО ЧЕРЕЗ РАЗ!!!*/
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+    private void showSoftKeyboard() {
+        if (isKeyboardActive && getContext() != null) {
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(INPUT_METHOD_SERVICE);
+            imm.showSoftInput(textOfTheNoteEditText, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
+
+    private void setKeyboardStatus() {
+        if (textOfTheNoteEditText.hasFocus() || titleEditText.hasFocus()) {
+            isKeyboardActive = true;
+        }
     }
 
     //TODO putParcelable
