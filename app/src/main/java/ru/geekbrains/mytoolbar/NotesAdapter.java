@@ -54,7 +54,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public void addNewElement(@NonNull Note note) {
         dataSet.add(note);
-        notifyDataSetChanged();
+        notifyItemChanged(getItemCount());
     }
     //TODO addNewElement
 

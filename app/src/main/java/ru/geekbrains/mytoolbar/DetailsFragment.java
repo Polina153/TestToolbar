@@ -4,7 +4,6 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 import static ru.geekbrains.mytoolbar.MainFragment.REQUEST_KEY;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,24 +13,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 public class DetailsFragment extends Fragment {
 
-    /* public final static String BODY_KEY = "BODY_KEY";
-     public final static String TITLE_KEY = "TITLE_KEY";
-     public final static String DATE_KEY = "DATE_KEY";
-     public final static String IMPORTANCE = "IMPORTANCE";*/
     public final static String NOTE_KEY = "NOTE_KEY";
     private static final String NOTE_IS_CLICKED_KEY = "NOTE_IS_CLICKED_KEY";
-    private Navigator navigator;
     private ToolbarCreator toolbarCreator;
     private EditText textOfTheNoteEditText;
     private EditText titleEditText;
@@ -41,13 +33,12 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        navigator = ((MainActivity) context).getNavigator();
         toolbarCreator = ((MainActivity) context).getToolbarCreator();
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 isKeyboardActive = false;
-                showAlertDialog();
+                showDialogFragment();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(
@@ -97,7 +88,11 @@ public class DetailsFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             setKeyboardStatus();
-            showAlertDialog();
+            showDialogFragment();
+            Bundle result = new Bundle();
+            Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
+            result.putParcelable(NOTE_KEY, note);
+            getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
             View view = this.requireActivity().getCurrentFocus();
             if (view != null) {
                 InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(INPUT_METHOD_SERVICE);
@@ -108,6 +103,12 @@ public class DetailsFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    private void showDialogFragment() {
+        SavingDialogFragment dialogFragment = new SavingDialogFragment();
+        dialogFragment.show(getChildFragmentManager(), "MY_DIALOG_FRAGMENT");
+
+    }
+/*
     private void showAlertDialog() {
         //Fixme FragmentDialog
         //TODO Прочитать про FragmentDialog, какие виды FragmentDialog бывают и объяснить, почему нужно использовать FragmentDialog вместо AlertDialog
@@ -132,16 +133,11 @@ public class DetailsFragment extends Fragment {
                 .setOnCancelListener(dialog -> showSoftKeyboard())
                 .setOnDismissListener(dialogInterface -> showSoftKeyboard())
                 .show();
-    }
+    }*/
 
-    private void showSoftKeyboard() {
-        if (isKeyboardActive && getContext() != null) {
-            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(INPUT_METHOD_SERVICE);
-            imm.showSoftInput(textOfTheNoteEditText, InputMethodManager.SHOW_IMPLICIT);
-        }
-    }
 
-    private void setKeyboardStatus() {
+
+    void setKeyboardStatus() {
         if (textOfTheNoteEditText.hasFocus() || titleEditText.hasFocus()) {
             isKeyboardActive = true;
         }
