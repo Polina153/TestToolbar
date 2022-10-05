@@ -30,6 +30,10 @@ public class DetailsFragment extends Fragment {
     private CheckBox isImportantCheckBox;
     private boolean isKeyboardActive = false;
 
+    public EditText getTitleEditText() {
+        return titleEditText;
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -106,7 +110,6 @@ public class DetailsFragment extends Fragment {
     private void showDialogFragment() {
         SaveNoteDialogFragment dialogFragment = new SaveNoteDialogFragment();
         dialogFragment.show(getChildFragmentManager(), SaveNoteDialogFragment.TAG);
-
     }
 /*
     private void showAlertDialog() {
@@ -134,7 +137,6 @@ public class DetailsFragment extends Fragment {
                 .setOnDismissListener(dialogInterface -> showSoftKeyboard())
                 .show();
     }*/
-
 
 
     void setKeyboardStatus() {

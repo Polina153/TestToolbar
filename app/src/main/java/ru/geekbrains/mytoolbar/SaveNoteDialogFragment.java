@@ -1,12 +1,9 @@
 package ru.geekbrains.mytoolbar;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,13 +15,12 @@ public class SaveNoteDialogFragment extends DialogFragment {
 
     public static final String TAG = "MY_DIALOG_FRAGMENT";
     private Navigator navigator;
-    private boolean isKeyboardActive;
+    //private boolean isKeyboardActive;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         navigator = ((MainActivity) context).getNavigator();
-        getFragment();
     }
 
     @Override
@@ -36,19 +32,23 @@ public class SaveNoteDialogFragment extends DialogFragment {
                 .setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        DetailsFragment.setKeyboardStatus();
+                        //detailsFragment.setKeyboardStatus();
                         Toast.makeText(SaveNoteDialogFragment.this.requireActivity().getBaseContext(), SaveNoteDialogFragment.this.getString(R.string.negative_answer), Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setOnDismissListener(dialogInterface -> showSoftKeyboard())
-                .setOnCancelListener((dialog -> showSoftKeyboard()))
+                //.setOnDismissListener(dialogInterface -> showSoftKeyboard())
+                //.setOnCancelListener((dialog -> showSoftKeyboard()))
                 .create();
     }
 
-    private void showSoftKeyboard() {
+    /*private void showSoftKeyboard() {
         if (isKeyboardActive && getContext() != null) {
             InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(INPUT_METHOD_SERVICE);
-            imm.showSoftInput(textOfTheNoteEditText, InputMethodManager.SHOW_IMPLICIT);
+            imm.showSoftInput(detailsFragment.getTitleEditText(), InputMethodManager.SHOW_IMPLICIT);
         }
     }
+
+    public void setDetailsFragment(DetailsFragment detailsFragment) {
+        this.detailsFragment = detailsFragment;
+    }*/
 }
