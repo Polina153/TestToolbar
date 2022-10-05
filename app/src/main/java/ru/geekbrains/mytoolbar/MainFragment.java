@@ -79,6 +79,8 @@ public class MainFragment extends Fragment {
                     (note, position) -> {
                         positionOfClickedElement = position;
                         navigator.addFragment(DetailsFragment.newInstance(note));
+                       /* notesAdapter.changeElement(note, positionOfClickedElement);
+                        navigator.addFragment(DetailsFragment.newInstance(note));*/
                     }, sharedPref);
         }
         recyclerView.setAdapter(notesAdapter);
@@ -94,6 +96,7 @@ public class MainFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
             sharedPref.saveNewNote(getString(R.string.default_title), getString(R.string.default_text));
+            //notesAdapter.addNewElement(new Note());
             notesAdapter.setNewData(sharedPref.getNotes());
             return true;
         }

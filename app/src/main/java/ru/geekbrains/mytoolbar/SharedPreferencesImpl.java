@@ -47,6 +47,8 @@ class SharedPreferencesImpl implements ISharedPreferences {
             String savedNotes = sharedPref.getString(MY_SHARED_PREF_KEY, null);
             if (savedNotes != null) {
                 userNotes = new GsonBuilder().create().fromJson(savedNotes, type);
+                userNotes.set(userNotes.size(), userNotes.get(userNotes.size()));
+                sharedPref.edit().putString(MY_SHARED_PREF_KEY, savedNotes).apply();
             }
         } catch (JsonSyntaxException e) {
             throw new IllegalStateException(e.getMessage());
