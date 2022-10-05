@@ -104,8 +104,8 @@ public class DetailsFragment extends Fragment {
     }
 
     private void showDialogFragment() {
-        SavingDialogFragment dialogFragment = new SavingDialogFragment();
-        dialogFragment.show(getChildFragmentManager(), "MY_DIALOG_FRAGMENT");
+        SaveNoteDialogFragment dialogFragment = new SaveNoteDialogFragment();
+        dialogFragment.show(getChildFragmentManager(), SaveNoteDialogFragment.TAG);
 
     }
 /*
