@@ -28,11 +28,6 @@ public class DetailsFragment extends Fragment {
     private EditText textOfTheNoteEditText;
     private EditText titleEditText;
     private CheckBox isImportantCheckBox;
-    private boolean isKeyboardActive = false;
-
-    public EditText getTitleEditText() {
-        return titleEditText;
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -41,7 +36,6 @@ public class DetailsFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                isKeyboardActive = false;
                 showDialogFragment();
             }
         };
@@ -91,7 +85,6 @@ public class DetailsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            setKeyboardStatus();
             showDialogFragment();
             Bundle result = new Bundle();
             Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
@@ -110,39 +103,6 @@ public class DetailsFragment extends Fragment {
     private void showDialogFragment() {
         SaveNoteDialogFragment dialogFragment = new SaveNoteDialogFragment();
         dialogFragment.show(getChildFragmentManager(), SaveNoteDialogFragment.TAG);
-    }
-/*
-    private void showAlertDialog() {
-        //Fixme FragmentDialog
-        //TODO Прочитать про FragmentDialog, какие виды FragmentDialog бывают и объяснить, почему нужно использовать FragmentDialog вместо AlertDialog
-        new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.question_to_user)
-                .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
-                {
-                    Bundle result = new Bundle();
-                    Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
-                    result.putParcelable(NOTE_KEY, note);
-                    getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
-                    navigator.popBackStack();
-                })
-
-                .setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        setKeyboardStatus();
-                        Toast.makeText(DetailsFragment.this.requireActivity().getBaseContext(), DetailsFragment.this.getString(R.string.negative_answer), Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setOnCancelListener(dialog -> showSoftKeyboard())
-                .setOnDismissListener(dialogInterface -> showSoftKeyboard())
-                .show();
-    }*/
-
-
-    void setKeyboardStatus() {
-        if (textOfTheNoteEditText.hasFocus() || titleEditText.hasFocus()) {
-            isKeyboardActive = true;
-        }
     }
 
     //TODO putParcelable

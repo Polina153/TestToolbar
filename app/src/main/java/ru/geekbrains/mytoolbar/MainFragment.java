@@ -96,8 +96,8 @@ public class MainFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
             sharedPref.saveNewNote(getString(R.string.default_title), getString(R.string.default_text));
-            //notesAdapter.addNewElement(new Note());
-            notesAdapter.setNewData(sharedPref.getNotes());
+            notesAdapter.addNewElement(new Note("title", "body", false));
+            //notesAdapter.setNewData(sharedPref.getNotes());
             return true;
         }
         return super.onOptionsItemSelected(item);
