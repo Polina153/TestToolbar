@@ -61,17 +61,6 @@ public class DetailsFragment extends Fragment {
         textOfTheNoteEditText = view.findViewById(R.id.body_of_note_edit_text);
 
         titleEditText = view.findViewById(R.id.title);
-        //hideKeyBoard();
-        //activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        //должно показыввать клавиатуру когда фрагмент в фокусе
-        /*textOfTheNoteEditText.requestFocus();
-        InputMethodManager imm = (InputMethodManager) requireContext().
-                getSystemService(INPUT_METHOD_SERVICE);
-        imm.showSoftInput(textOfTheNoteEditText, InputMethodManager.SHOW_IMPLICIT);*/
-        //textOfTheNoteEditText.requestFocus();
-           /* InputMethodManager imm = (InputMethodManager)requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-*/
         TextView dateTextView = view.findViewById(R.id.date_of_the_note);
         isImportantCheckBox = view.findViewById(R.id.importance_second_fragment);
 
