@@ -1,6 +1,5 @@
 package ru.geekbrains.mytoolbar;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
 import static ru.geekbrains.mytoolbar.MainFragment.REQUEST_KEY;
 
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -63,11 +61,17 @@ public class DetailsFragment extends Fragment {
         textOfTheNoteEditText = view.findViewById(R.id.body_of_note_edit_text);
 
         titleEditText = view.findViewById(R.id.title);
+        //hideKeyBoard();
+        //activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //должно показыввать клавиатуру когда фрагмент в фокусе
-        textOfTheNoteEditText.requestFocus();
-        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(INPUT_METHOD_SERVICE);
-        imm.showSoftInput(textOfTheNoteEditText, InputMethodManager.SHOW_IMPLICIT);
-
+        /*textOfTheNoteEditText.requestFocus();
+        InputMethodManager imm = (InputMethodManager) requireContext().
+                getSystemService(INPUT_METHOD_SERVICE);
+        imm.showSoftInput(textOfTheNoteEditText, InputMethodManager.SHOW_IMPLICIT);*/
+        //textOfTheNoteEditText.requestFocus();
+           /* InputMethodManager imm = (InputMethodManager)requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+*/
         TextView dateTextView = view.findViewById(R.id.date_of_the_note);
         isImportantCheckBox = view.findViewById(R.id.importance_second_fragment);
 
@@ -90,11 +94,6 @@ public class DetailsFragment extends Fragment {
             Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
             result.putParcelable(NOTE_KEY, note);
             getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
-            View view = this.requireActivity().getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
             return true;
         }
         return super.onOptionsItemSelected(item);

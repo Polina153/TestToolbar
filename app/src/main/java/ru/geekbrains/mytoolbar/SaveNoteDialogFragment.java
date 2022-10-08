@@ -1,14 +1,18 @@
 package ru.geekbrains.mytoolbar;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 public class SaveNoteDialogFragment extends DialogFragment {
@@ -25,6 +29,7 @@ public class SaveNoteDialogFragment extends DialogFragment {
     @Override
     @NonNull
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        hideKeyBoard();
         return new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.question_to_user)
                 .setPositiveButton(R.string.positive_button, (dialogInterface, i) -> navigator.popBackStack())
@@ -37,5 +42,12 @@ public class SaveNoteDialogFragment extends DialogFragment {
                     }
                 })
                 .create();
+    }
+    private void hideKeyBoard() {
+        View view = this.requireActivity().getCurrentFocus();
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        InputMethodManager imm = (InputMethodManager) activity.
+                getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
