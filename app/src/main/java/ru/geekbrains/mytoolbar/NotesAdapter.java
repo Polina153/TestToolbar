@@ -1,6 +1,5 @@
 package ru.geekbrains.mytoolbar;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +42,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         return dataSet.size();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void setNewData(ArrayList<Note> userNotes) {
-        dataSet = userNotes;
-        notifyDataSetChanged();
-    }
-
     public void changeElement(@NonNull Note note, int position) {
         dataSet.set(position, note);
         notifyItemChanged(position);
@@ -58,7 +51,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         dataSet.add(note);
         notifyItemChanged(getItemCount());
     }
-    //TODO addNewElement*/
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 //TODO Save all changes correctly
 //TODO Refactor
 //FIXME Add listItem by tapping menu button
+//TODO Delete by long tap
+//TODO Add new listItem at the top of the list
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";
