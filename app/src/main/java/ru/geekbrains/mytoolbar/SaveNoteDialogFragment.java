@@ -18,7 +18,8 @@ public class SaveNoteDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.question_to_user)
-                .setPositiveButton(R.string.positive_button, (dialogInterface, i) -> clickListener.onButtonClick(ButtonName.YES_BUTTON))
+                .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
+                        clickListener.onButtonClick(ButtonName.YES_BUTTON))
                 .setNegativeButton(R.string.negative_button, (dialogInterface, i) -> {
                     clickListener.onButtonClick(ButtonName.NO_BUTTON);
                 })

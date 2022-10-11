@@ -2,12 +2,14 @@ package ru.geekbrains.mytoolbar;
 
 import static ru.geekbrains.mytoolbar.MainFragment.REQUEST_KEY;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,12 +29,14 @@ public class DetailsFragment extends Fragment {
     private EditText textOfTheNoteEditText;
     private EditText titleEditText;
     private CheckBox isImportantCheckBox;
+    private Navigator navigator;
     private boolean isKeyboardActive = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         toolbarCreator = ((MainActivity) context).getToolbarCreator();
+        navigator = ((MainActivity) context).getNavigator();
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -83,10 +87,6 @@ public class DetailsFragment extends Fragment {
         if (item.getItemId() == android.R.id.home) {
             setKeyboardStatus();
             showDialogFragment();
-            Bundle result = new Bundle();
-            Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
-            result.putParcelable(NOTE_KEY, note);
-            getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -94,36 +94,45 @@ public class DetailsFragment extends Fragment {
 
     private void showDialogFragment() {
         SaveNoteDialogFragment dialogFragment = new SaveNoteDialogFragment();
+        setKeyboardStatus();
         dialogFragment.setButtonClickListener(new SaveNoteDialogFragment.OnDialogFragmentClickListener() {
             @Override
             public void onButtonClick(SaveNoteDialogFragment.ButtonName name) {
                 switch (name){
                     case YES_BUTTON:
-                        //TODO popbackstack...
+                        Bundle result = new Bundle();
+                        Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
+                        result.putParcelable(NOTE_KEY, note);
+                        getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
+                        if (isKeyboardActive) {
+                            hideKeyBoard();
+                        }
+                        navigator.popBackStack();
+                        break;
                     case NO_BUTTON:
                         Toast.makeText(DetailsFragment.this.requireActivity().getBaseContext(),
                                 DetailsFragment.this.getString(R.string.negative_answer),
                                 Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
         });
         dialogFragment.show(getChildFragmentManager(), SaveNoteDialogFragment.TAG);
     }
 
-    /*private void hideKeyBoard() {
+    private void hideKeyBoard() {
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         View view = activity.getCurrentFocus();
         InputMethodManager imm = (InputMethodManager) activity.
                 getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }*/
+    }
 
     void setKeyboardStatus() {
         if (textOfTheNoteEditText.hasFocus() || titleEditText.hasFocus()) {
             isKeyboardActive = true;
         }
     }
-
 
     //TODO putParcelable
     public static DetailsFragment newInstance(Note note) {

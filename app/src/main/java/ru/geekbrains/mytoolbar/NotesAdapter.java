@@ -1,5 +1,6 @@
 package ru.geekbrains.mytoolbar;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,13 +52,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public void deleteElement(int position) {
         dataSet.remove(position);
-        notifyItemChanged(position);
+        notifyItemRemoved(position);
     }
 
-    //FIXME add new note long time
+    @SuppressLint("NotifyDataSetChanged")
     public void addNewElement(@NonNull Note note, int positionOfNewElement) {
         dataSet.add(positionOfNewElement, note);
-        notifyItemChanged(getItemCount());
+        notifyItemInserted(positionOfNewElement);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
