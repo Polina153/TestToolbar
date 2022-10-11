@@ -2,17 +2,16 @@ package ru.geekbrains.mytoolbar;
 
 import static ru.geekbrains.mytoolbar.MainFragment.REQUEST_KEY;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -99,20 +98,25 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onButtonClick(SaveNoteDialogFragment.ButtonName name) {
                 switch (name){
-
+                    case YES_BUTTON:
+                        //TODO popbackstack...
+                    case NO_BUTTON:
+                        Toast.makeText(DetailsFragment.this.requireActivity().getBaseContext(),
+                                DetailsFragment.this.getString(R.string.negative_answer),
+                                Toast.LENGTH_SHORT).show();
                 }
             }
         });
         dialogFragment.show(getChildFragmentManager(), SaveNoteDialogFragment.TAG);
     }
 
-    private void hideKeyBoard() {
+    /*private void hideKeyBoard() {
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         View view = activity.getCurrentFocus();
         InputMethodManager imm = (InputMethodManager) activity.
                 getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
+    }*/
 
     void setKeyboardStatus() {
         if (textOfTheNoteEditText.hasFocus() || titleEditText.hasFocus()) {

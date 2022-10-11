@@ -17,11 +17,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private ArrayList<Note> dataSet;
     private final OnMyItemClickListener clickListener;
     private final ISharedPreferences sharedPref;
+    private final OnMyItemLongClickListener longClickListener;
 
-    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener, @NonNull ISharedPreferences sharedPref) {
+    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener, OnMyItemLongClickListener longClickListener, @NonNull ISharedPreferences sharedPref) {
         this.dataSet = dataSet;
         this.clickListener = clickListener;
         this.sharedPref = sharedPref;
+        this.longClickListener = longClickListener;
     }
 
     @Override
@@ -47,8 +49,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         notifyItemChanged(position);
     }
 
-    public void addNewElement(@NonNull Note note) {
-        dataSet.add(note);
+    public void deleteElement(int position) {
+        dataSet.remove(position);
+        notifyItemChanged(position);
+    }
+
+    //FIXME add new note long time
+    public void addNewElement(@NonNull Note note, int positionOfNewElement) {
+        dataSet.add(positionOfNewElement, note);
         notifyItemChanged(getItemCount());
     }
 
@@ -86,5 +94,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     interface OnMyItemClickListener {
         void onListItemClick(Note note, int position);
+    }
+
+    interface OnMyItemLongClickListener {
+        void onListItemLongClick(Note note, int position);
     }
 }

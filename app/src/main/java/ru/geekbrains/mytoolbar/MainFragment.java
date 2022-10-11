@@ -78,12 +78,22 @@ public class MainFragment extends Fragment {
         recyclerView.addItemDecoration(itemDecoration);
         if (notesAdapter == null) {
             notesAdapter = new NotesAdapter(sharedPref.getNotes(),
-                    (note, position) -> {
-                        positionOfClickedElement = position;
-                        navigator.addFragment(DetailsFragment.newInstance(note));
+                    new NotesAdapter.OnMyItemClickListener() {
+                        @Override
+                        public void onListItemClick(Note note, int position) {
+                            positionOfClickedElement = position;
+                            navigator.addFragment(DetailsFragment.newInstance(note));
                        /* notesAdapter.changeElement(note, positionOfClickedElement);
                         navigator.addFragment(DetailsFragment.newInstance(note));*/
-                    }, sharedPref);
+                        }
+                    }, new NotesAdapter.OnMyItemLongClickListener(){
+
+                @Override
+                public void onListItemLongClick(Note note, int position) {
+                    positionOfClickedElement = position;
+                    notesAdapter.deleteElement(positionOfClickedElement);
+                }
+            }, sharedPref);
         }
         recyclerView.setAdapter(notesAdapter);
     }
@@ -98,7 +108,7 @@ public class MainFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
             sharedPref.saveNewNote(getString(R.string.default_title), getString(R.string.default_text));
-            notesAdapter.addNewElement(new Note("title", "body", false));
+            notesAdapter.addNewElement(new Note("title", "body", false), 0);
             //notesAdapter.setNewData(sharedPref.getNotes());
             return true;
         }
