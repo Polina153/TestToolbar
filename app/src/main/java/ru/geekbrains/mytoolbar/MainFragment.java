@@ -6,6 +6,7 @@ import static ru.geekbrains.mytoolbar.DetailsFragment.NOTE_KEY;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +35,10 @@ public class MainFragment extends Fragment {
     private NotesAdapter notesAdapter;
     private ISharedPreferences sharedPref;
     private int positionOfClickedElement;
+
+    public int getPositionOfClickedElement() {
+        return positionOfClickedElement;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,14 +91,15 @@ public class MainFragment extends Fragment {
                        /* notesAdapter.changeElement(note, positionOfClickedElement);
                         navigator.addFragment(DetailsFragment.newInstance(note));*/
                         }
-                    }, new NotesAdapter.OnMyItemLongClickListener(){
+                    }, new NotesAdapter.OnMyItemLongClickListener() {
 
                 @Override
                 public void onListItemLongClick(Note note, int position) {
+                    //notesAdapter.showConextMenu (10, 10);
                     positionOfClickedElement = position;
                     notesAdapter.deleteElement(positionOfClickedElement);
                 }
-            }, sharedPref);
+            }, sharedPref, this);
         }
         recyclerView.setAdapter(notesAdapter);
     }
@@ -114,6 +120,21 @@ public class MainFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_delete) {notesAdapter.deleteElement(getPositionOfClickedElement());
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
 
     public static Fragment newInstance() {
         return new MainFragment();

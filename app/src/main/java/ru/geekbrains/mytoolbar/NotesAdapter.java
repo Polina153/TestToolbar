@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -19,12 +20,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private final OnMyItemClickListener clickListener;
     private final ISharedPreferences sharedPref;
     private final OnMyItemLongClickListener longClickListener;
+    private final Fragment fragment;
 
-    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener, OnMyItemLongClickListener longClickListener, @NonNull ISharedPreferences sharedPref) {
+    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener, OnMyItemLongClickListener longClickListener, @NonNull ISharedPreferences sharedPref, Fragment fragment) {
         this.dataSet = dataSet;
         this.clickListener = clickListener;
         this.sharedPref = sharedPref;
         this.longClickListener = longClickListener;
+        this.fragment = fragment;
     }
 
     @Override
@@ -75,6 +78,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             body = view.findViewById(R.id.text_view_note_body);
             date = view.findViewById(R.id.text_view_date);
             isImportant = view.findViewById(R.id.is_important_checkbox);
+
+            registerContextMenu(itemView);
+        }
+
+        private void registerContextMenu(View itemView) {
+            if (fragment != null){
+                fragment.registerForContextMenu(itemView);
+            }
         }
 
         void bind(Note note, int position) {
