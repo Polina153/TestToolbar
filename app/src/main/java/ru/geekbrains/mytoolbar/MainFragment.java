@@ -22,11 +22,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//TODO Save all changes correctly
-//TODO Refactor
-//FIXME Add listItem by tapping menu button
 //TODO Delete by long tap
-//TODO Add new listItem at the top of the list
+//FIXME Debug deleting
+//FIXME Save deleted element
+//FIXME Save checkbox on MainFragment
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";
@@ -94,9 +93,9 @@ public class MainFragment extends Fragment {
                     }, new NotesAdapter.OnMyItemLongClickListener() {
 
                 @Override
-                public void onListItemLongClick(Note note, int position) {
+                public void onListItemLongClick(int position) {
                     //notesAdapter.showConextMenu (10, 10);
-                    positionOfClickedElement = position;
+                    //positionOfClickedElement = position;
                     notesAdapter.deleteElement(positionOfClickedElement);
                 }
             }, sharedPref, this);
@@ -120,6 +119,7 @@ public class MainFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -130,6 +130,7 @@ public class MainFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_delete) {notesAdapter.deleteElement(getPositionOfClickedElement());
+            notesAdapter.deleteElement(notesAdapter.getPosition());
             return true;
         }
         return super.onContextItemSelected(item);

@@ -1,6 +1,7 @@
 package ru.geekbrains.mytoolbar;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private ArrayList<Note> dataSet;
     private final OnMyItemClickListener clickListener;
     private final ISharedPreferences sharedPref;
-    private final OnMyItemLongClickListener longClickListener;
     private final Fragment fragment;
+    private int position = 0;
 
     public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener, OnMyItemLongClickListener longClickListener, @NonNull ISharedPreferences sharedPref, Fragment fragment) {
         this.dataSet = dataSet;
@@ -65,6 +66,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    int getPosition() {
+        return position;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView noteTextView;
@@ -83,12 +88,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         }
 
         private void registerContextMenu(View itemView) {
-            if (fragment != null){
+            if (fragment != null) {
                 fragment.registerForContextMenu(itemView);
             }
         }
 
-        void bind(Note note, int position) {
+        void bind(Note note, int currentPposition) {
             noteTextView.setText(note.getTitle());
             body.setText(note.getBody());
             date.setText(note.getDate());
@@ -96,11 +101,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             itemView.setOnClickListener(view -> {
                 Note newNote = new Note(note.getTitle(), note.getBody(), isImportant.isChecked());
                 //TODO Save isImportant
-                sharedPref.saveNote(newNote, position);
+                sharedPref.saveNote(newNote, currentPposition);
                 clickListener.onListItemClick(
                         newNote,
-                        position);
+                        currentPposition);
 
+            });
+            itemView.setOnLongClickListener(view -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    itemView.showContextMenu(10, 10);
+                    position = currentPposition;
+                }
+                //longClickListener.onListItemLongClick(position);
+                return true;
             });
         }
     }
@@ -110,6 +123,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     }
 
     interface OnMyItemLongClickListener {
-        void onListItemLongClick(Note note, int position);
+        void onListItemLongClick(int position);
     }
 }

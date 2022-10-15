@@ -98,7 +98,7 @@ public class DetailsFragment extends Fragment {
         dialogFragment.setButtonClickListener(new SaveNoteDialogFragment.OnDialogFragmentClickListener() {
             @Override
             public void onButtonClick(SaveNoteDialogFragment.ButtonName name) {
-                switch (name){
+                switch (name) {
                     case YES_BUTTON:
                         Bundle result = new Bundle();
                         Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
@@ -110,6 +110,7 @@ public class DetailsFragment extends Fragment {
                         navigator.popBackStack();
                         break;
                     case NO_BUTTON:
+                        //FIXME case No called two times in a row
                         Toast.makeText(DetailsFragment.this.requireActivity().getBaseContext(),
                                 DetailsFragment.this.getString(R.string.negative_answer),
                                 Toast.LENGTH_SHORT).show();
