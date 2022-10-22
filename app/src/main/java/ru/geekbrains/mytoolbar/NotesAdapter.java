@@ -27,7 +27,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         this.dataSet = dataSet;
         this.clickListener = clickListener;
         this.sharedPref = sharedPref;
-        this.longClickListener = longClickListener;
         this.fragment = fragment;
     }
 
@@ -99,7 +98,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             date.setText(note.getDate());
             isImportant.setChecked(note.getIsImportant());
             itemView.setOnClickListener(view -> {
-                Note newNote = new Note(note.getTitle(), note.getBody(), isImportant.isChecked());
+                Note newNote = new Note(note.getTitle(),
+                        note.getBody(),
+                        note.getDate(),
+                        isImportant.isChecked());
                 //TODO Save isImportant
                 sharedPref.saveNote(newNote, currentPposition);
                 clickListener.onListItemClick(

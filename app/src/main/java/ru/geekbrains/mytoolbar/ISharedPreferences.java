@@ -10,5 +10,9 @@ interface ISharedPreferences {
 
     ArrayList<Note> getNotes();
 
-    void saveNewNote(@NonNull String title, @NonNull String text);
+    void saveNewNote(@NonNull String title, @NonNull String text, String date);
+
+    void deleteNote(int position);
+
+    void saveListOfNotes();
 }

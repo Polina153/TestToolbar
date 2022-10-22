@@ -28,6 +28,7 @@ public class DetailsFragment extends Fragment {
     private ToolbarCreator toolbarCreator;
     private EditText textOfTheNoteEditText;
     private EditText titleEditText;
+    private TextView dateTextView;
     private CheckBox isImportantCheckBox;
     private Navigator navigator;
     private boolean isKeyboardActive = false;
@@ -66,9 +67,9 @@ public class DetailsFragment extends Fragment {
                 activity);
         toolbarCreator.setButtonBack(activity.getSupportActionBar());
         textOfTheNoteEditText = view.findViewById(R.id.body_of_note_edit_text);
-
+        dateTextView = view.findViewById(R.id.date_of_the_note);
         titleEditText = view.findViewById(R.id.title);
-        TextView dateTextView = view.findViewById(R.id.date_of_the_note);
+        //TextView dateTextView = view.findViewById(R.id.date_of_the_note);
         isImportantCheckBox = view.findViewById(R.id.importance_second_fragment);
 
         Bundle args = getArguments();
@@ -101,7 +102,10 @@ public class DetailsFragment extends Fragment {
                 switch (name) {
                     case YES_BUTTON:
                         Bundle result = new Bundle();
-                        Note note = new Note(titleEditText.getText().toString(), textOfTheNoteEditText.getText().toString(), isImportantCheckBox.isChecked());
+                        Note note = new Note(titleEditText.getText().toString(),
+                                textOfTheNoteEditText.getText().toString(),
+                                dateTextView.getText().toString(),
+                                isImportantCheckBox.isChecked());
                         result.putParcelable(NOTE_KEY, note);
                         getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
                         if (isKeyboardActive) {

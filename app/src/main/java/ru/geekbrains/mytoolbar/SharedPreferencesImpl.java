@@ -55,7 +55,7 @@ class SharedPreferencesImpl implements ISharedPreferences {
     }
 
     @Override
-    public void saveNewNote(@NonNull String title, @NonNull String text) {
+    public void saveNewNote(@NonNull String title, @NonNull String text, String date) {
         try {
             Type type = new TypeToken<ArrayList<Note>>() {
             }.getType();
@@ -64,7 +64,35 @@ class SharedPreferencesImpl implements ISharedPreferences {
             if (userNotes == null) {
                 userNotes = new ArrayList<>();
             }
-            userNotes.add(new Note(title + userNotes.size(), text, false));
+            userNotes.add(new Note(title + userNotes.size(), text, date, false));
+            String jsonNotes = new GsonBuilder().create().toJson(userNotes);
+            sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
+        } catch (JsonSyntaxException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteNote(int position) {
+        try {
+            Type type = new TypeToken<ArrayList<Note>>() {
+            }.getType();
+            String savedNotes = sharedPref.getString(MY_SHARED_PREF_KEY, null);
+            ArrayList<Note> userNotes = new GsonBuilder().create().fromJson(savedNotes, type);
+            userNotes.remove(position);
+            String jsonNotes = new GsonBuilder().create().toJson(userNotes);
+            sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
+        } catch (JsonSyntaxException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void saveListOfNotes() {
+        ArrayList<Note> userNotes = new ArrayList<>();
+        try {
+            Type type = new TypeToken<ArrayList<Note>>() {
+            }.getType();
             String jsonNotes = new GsonBuilder().create().toJson(userNotes);
             sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
         } catch (JsonSyntaxException e) {
