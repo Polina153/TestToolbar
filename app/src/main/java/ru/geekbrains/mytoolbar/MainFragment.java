@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,10 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-//TODO Delete by long tap
-//FIXME Debug deleting
-//FIXME Save deleted element
-//FIXME Save checkbox on MainFragment
+//FIXME Save checkbox in MainFragment
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";
@@ -93,13 +89,7 @@ public class MainFragment extends Fragment {
                             positionOfClickedElement = position;
                             navigator.addFragment(DetailsFragment.newInstance(note));
                         }
-                    }, new NotesAdapter.OnMyItemLongClickListener() {
-
-                @Override
-                public void onListItemLongClick(int position) {
-                    notesAdapter.deleteElement(notesAdapter.getPosition());
-                }
-            }, sharedPref, this);
+                    }, sharedPref, this);
         }
         recyclerView.setAdapter(notesAdapter);
     }
@@ -113,17 +103,20 @@ public class MainFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            sharedPref.saveNewNote(getString(R.string.title),
+            Note newNote = new Note(getString(R.string.title),
                     getString(R.string.note),
-                    new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date()));
-            notesAdapter.addNewElement(new Note(getString(R.string.title), getString(R.string.note), new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date()),  false), 0);
-            //notesAdapter.setNewData(sharedPref.getNotes());
+                    getDateOfCreation(),
+                    false);
+            sharedPref.saveNewNote(newNote);
+            notesAdapter.addNewElement(newNote, 0);
             return true;
         }
-        /*else if (item.getItemId() == R.id.is_important_checkbox)(new ){
-            sharedPref.saveNote(, notesAdapter.getPosition());
-        }*/
         return super.onOptionsItemSelected(item);
+    }
+
+    @NonNull
+    private String getDateOfCreation() {
+        return new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date());
     }
 
     @Override
@@ -146,29 +139,10 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onPause() {
+        ArrayList<Note> list = notesAdapter.getList();
+        //Неоптимальный код: нужно только сохранять checkbox, а не все переменные класса Note
+        sharedPref.saveNotes(list);
         super.onPause();
-        Toast.makeText(requireActivity().getBaseContext(),
-                "onPause",
-                Toast.LENGTH_SHORT).show();
-        sharedPref.saveListOfNotes();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        sharedPref.getNotes();
-        Toast.makeText(requireActivity().getBaseContext(),
-                "onResume",
-                Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        sharedPref.saveListOfNotes();
-        Toast.makeText(requireActivity().getBaseContext(),
-                "onStop",
-                Toast.LENGTH_SHORT).show();
     }
 
     public static Fragment newInstance() {

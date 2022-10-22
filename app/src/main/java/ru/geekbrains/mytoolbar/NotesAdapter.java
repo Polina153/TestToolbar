@@ -23,7 +23,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private final Fragment fragment;
     private int position = 0;
 
-    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener, OnMyItemLongClickListener longClickListener, @NonNull ISharedPreferences sharedPref, Fragment fragment) {
+    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener, @NonNull ISharedPreferences sharedPref, Fragment fragment) {
         this.dataSet = dataSet;
         this.clickListener = clickListener;
         this.sharedPref = sharedPref;
@@ -40,7 +40,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.bind(dataSet.get(position), position);
+        viewHolder.bind(dataSet.get(position));
     }
 
     @Override
@@ -62,7 +62,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     public void addNewElement(@NonNull Note note, int positionOfNewElement) {
         dataSet.add(positionOfNewElement, note);
         notifyItemInserted(positionOfNewElement);
-        notifyDataSetChanged();
     }
 
     int getPosition() {
@@ -92,7 +91,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             }
         }
 
-        void bind(Note note, int currentPposition) {
+        void bind(Note note) {
             noteTextView.setText(note.getTitle());
             body.setText(note.getBody());
             date.setText(note.getDate());
@@ -103,16 +102,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                         note.getDate(),
                         isImportant.isChecked());
                 //TODO Save isImportant
-                sharedPref.saveNote(newNote, currentPposition);
+                sharedPref.saveNote(newNote, getAdapterPosition());
                 clickListener.onListItemClick(
                         newNote,
-                        currentPposition);
-
+                        getAdapterPosition());
             });
             itemView.setOnLongClickListener(view -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     itemView.showContextMenu(10, 10);
-                    position = currentPposition;
+                    position = getAdapterPosition();
                 }
                 //longClickListener.onListItemLongClick(position);
                 return true;
