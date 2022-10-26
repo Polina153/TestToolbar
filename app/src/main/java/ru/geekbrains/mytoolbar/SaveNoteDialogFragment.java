@@ -1,6 +1,7 @@
 package ru.geekbrains.mytoolbar;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,8 +19,12 @@ public class SaveNoteDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.question_to_user)
-                .setPositiveButton(R.string.positive_button, (dialogInterface, i) ->
-                        clickListener.onButtonClick(ButtonName.YES_BUTTON))
+                .setPositiveButton(R.string.positive_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        clickListener.onButtonClick(ButtonName.YES_BUTTON);
+                    }
+                })
                 .setNegativeButton(R.string.negative_button, (dialogInterface, i) -> {
                     clickListener.onButtonClick(ButtonName.NO_BUTTON);
                 })

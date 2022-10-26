@@ -86,4 +86,10 @@ class SharedPreferencesImpl implements ISharedPreferences {
             throw new IllegalStateException(e.getMessage());
         }
     }
+
+    @Override
+    public void saveNotes(ArrayList<Note> list) {
+        String jsonNotes = new GsonBuilder().create().toJson(list);
+        sharedPref.edit().putString(MY_SHARED_PREF_KEY, jsonNotes).apply();
+    }
 }

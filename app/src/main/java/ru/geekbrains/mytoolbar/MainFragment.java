@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -143,6 +144,12 @@ public class MainFragment extends Fragment {
         //Неоптимальный код: нужно только сохранять checkbox, а не все переменные класса Note
         sharedPref.saveNotes(list);
         super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        sharedPref.getNotes();
+        super.onResume();
     }
 
     public static Fragment newInstance() {

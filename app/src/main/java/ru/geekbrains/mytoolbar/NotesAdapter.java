@@ -23,7 +23,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private final Fragment fragment;
     private int position = 0;
 
-    public NotesAdapter(@Nullable ArrayList<Note> dataSet, OnMyItemClickListener clickListener, @NonNull ISharedPreferences sharedPref, Fragment fragment) {
+    public ArrayList<Note> getDataSet() {
+        return dataSet;
+    }
+
+    public NotesAdapter(@Nullable ArrayList<Note> dataSet,
+                        OnMyItemClickListener clickListener,
+                        @NonNull ISharedPreferences sharedPref,
+                        Fragment fragment) {
         this.dataSet = dataSet;
         this.clickListener = clickListener;
         this.sharedPref = sharedPref;
@@ -68,6 +75,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         return position;
     }
 
+    public ArrayList<Note> getList() {
+        return getDataSet();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView noteTextView;
@@ -96,6 +107,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             body.setText(note.getBody());
             date.setText(note.getDate());
             isImportant.setChecked(note.getIsImportant());
+            isImportant.setOnClickListener(view -> {
+                Note changedNote = new Note(note.getTitle(),
+                        note.getBody(),
+                        note.getDate(),
+                        isImportant.isChecked());
+                dataSet.set(getAdapterPosition(), changedNote);
+                sharedPref.saveNote(changedNote, getAdapterPosition()/*this.getLayoutPosition()*/);
+            });
             itemView.setOnClickListener(view -> {
                 Note newNote = new Note(note.getTitle(),
                         note.getBody(),
@@ -122,7 +141,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         void onListItemClick(Note note, int position);
     }
 
-    interface OnMyItemLongClickListener {
+   /* interface OnMyItemLongClickListener {
         void onListItemLongClick(int position);
-    }
+    }*/
 }

@@ -13,4 +13,6 @@ interface ISharedPreferences {
     void saveNewNote(@NonNull Note note);
 
     void deleteNote(int position);
+
+    void saveNotes(ArrayList<Note> list);
 }

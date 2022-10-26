@@ -2,6 +2,7 @@ package ru.geekbrains.mytoolbar;
 
 import static ru.geekbrains.mytoolbar.MainFragment.REQUEST_KEY;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -97,6 +97,7 @@ public class DetailsFragment extends Fragment {
         SaveNoteDialogFragment dialogFragment = new SaveNoteDialogFragment();
         setKeyboardStatus();
         dialogFragment.setButtonClickListener(new SaveNoteDialogFragment.OnDialogFragmentClickListener() {
+            @SuppressLint("ShowToast")
             @Override
             public void onButtonClick(SaveNoteDialogFragment.ButtonName name) {
                 switch (name) {
@@ -115,9 +116,13 @@ public class DetailsFragment extends Fragment {
                         break;
                     case NO_BUTTON:
                         //FIXME case No called two times in a row
-                        Toast.makeText(DetailsFragment.this.requireActivity().getBaseContext(),
+                        /*Toast.makeText(DetailsFragment.this.requireActivity().getBaseContext(),
                                 DetailsFragment.this.getString(R.string.negative_answer),
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT).show();*/
+                        /*Toast.makeText(requireContext(),
+                                getString(R.string.negative_answer),
+                                Toast.LENGTH_SHORT);*/
+                        navigator.popBackStack();
                         break;
                 }
             }
