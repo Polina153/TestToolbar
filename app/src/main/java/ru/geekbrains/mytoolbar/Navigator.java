@@ -14,20 +14,13 @@ public class Navigator {
         this.fragmentManager = fragmentManager;
     }
 
-    public void addMainFragment(Fragment fragment) {
+    public void addFragment(Fragment fragment) {
         if (fragmentManager != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
-            //fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
-    }
-
-    public void addDetailsFragment(Fragment fragment) {
-        if (fragmentManager != null) {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.addToBackStack(null);
+            if (fragment instanceof DetailsFragment) {
+                fragmentTransaction.addToBackStack(null);
+            }
             fragmentTransaction.commit();
         }
     }

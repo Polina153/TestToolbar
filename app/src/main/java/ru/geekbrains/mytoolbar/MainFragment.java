@@ -89,7 +89,7 @@ public class MainFragment extends Fragment {
                         public void onListItemClick(Note note, int position) {
                             positionOfClickedElement = position;
                             //navigator.addFragment(DetailsFragment.newInstance(note));
-                            navigator.addDetailsFragment(DetailsFragment.newInstance(note));
+                            navigator.addFragment(DetailsFragment.newInstance(note));
                         }
                     }, sharedPref, this);
         }
