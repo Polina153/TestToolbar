@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -112,16 +113,23 @@ public class DetailsFragment extends Fragment {
                         if (isKeyboardActive) {
                             hideKeyBoard();
                         }
+                        if (navigator == null) {
+                            navigator = ((MainActivity) getActivity()).getNavigator();
+                        }
                         navigator.popBackStack();
                         break;
                     case NO_BUTTON:
                         //FIXME case No called two times in a row
-                        /*Toast.makeText(DetailsFragment.this.requireActivity().getBaseContext(),
+                        Toast.makeText(DetailsFragment.this.requireActivity().getBaseContext(),
                                 DetailsFragment.this.getString(R.string.negative_answer),
-                                Toast.LENGTH_SHORT).show();*/
+                                Toast.LENGTH_SHORT).show();
                         /*Toast.makeText(requireContext(),
                                 getString(R.string.negative_answer),
                                 Toast.LENGTH_SHORT);*/
+                        Context context = getActivity();
+                        if (navigator == null && !(context == null)) {
+                            navigator = ((MainActivity) context).getNavigator();
+                        }
                         navigator.popBackStack();
                         break;
                 }
@@ -142,6 +150,31 @@ public class DetailsFragment extends Fragment {
         if (textOfTheNoteEditText.hasFocus() || titleEditText.hasFocus()) {
             isKeyboardActive = true;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
     }
 
     //TODO putParcelable

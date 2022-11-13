@@ -53,6 +53,17 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("1", 111);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         navigator = ((MainActivity) context).getNavigator();
@@ -151,6 +162,21 @@ public class MainFragment extends Fragment {
     public void onResume() {
         sharedPref.getNotes();
         super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     public static Fragment newInstance() {

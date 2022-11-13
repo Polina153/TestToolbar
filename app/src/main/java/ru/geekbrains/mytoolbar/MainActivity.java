@@ -15,7 +15,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         navigator = new Navigator(getSupportFragmentManager());
         //navigator.addFragment(MainFragment.newInstance());
-        navigator.addFragment(MainFragment.newInstance());
+        if (savedInstanceState == null) {
+            navigator.addFragment(MainFragment.newInstance());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     public Navigator getNavigator() {
