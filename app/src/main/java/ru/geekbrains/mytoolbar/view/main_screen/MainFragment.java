@@ -1,7 +1,7 @@
-package ru.geekbrains.mytoolbar;
+package ru.geekbrains.mytoolbar.view.main_screen;
 
 import static android.content.Context.MODE_PRIVATE;
-import static ru.geekbrains.mytoolbar.DetailsFragment.NOTE_KEY;
+import static ru.geekbrains.mytoolbar.view.details_screen.DetailsFragment.NOTE_KEY;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -27,7 +27,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-//FIXME Save checkbox in MainFragment
+import ru.geekbrains.mytoolbar.MainActivity;
+import ru.geekbrains.mytoolbar.R;
+import ru.geekbrains.mytoolbar.model.ISharedPreferences;
+import ru.geekbrains.mytoolbar.model.Note;
+import ru.geekbrains.mytoolbar.model.SharedPreferencesImpl;
+import ru.geekbrains.mytoolbar.presenter.Navigator;
+import ru.geekbrains.mytoolbar.presenter.NotesAdapter;
+import ru.geekbrains.mytoolbar.presenter.ToolbarCreator;
+import ru.geekbrains.mytoolbar.view.details_screen.DetailsFragment;
+
 public class MainFragment extends Fragment {
 
     public static final String REQUEST_KEY = "requestKey";

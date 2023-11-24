@@ -1,6 +1,6 @@
-package ru.geekbrains.mytoolbar;
+package ru.geekbrains.mytoolbar.view.details_screen;
 
-import static ru.geekbrains.mytoolbar.MainFragment.REQUEST_KEY;
+import static ru.geekbrains.mytoolbar.view.main_screen.MainFragment.REQUEST_KEY;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -21,6 +21,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import ru.geekbrains.mytoolbar.MainActivity;
+import ru.geekbrains.mytoolbar.R;
+import ru.geekbrains.mytoolbar.model.Note;
+import ru.geekbrains.mytoolbar.presenter.Navigator;
+import ru.geekbrains.mytoolbar.presenter.ToolbarCreator;
 
 public class DetailsFragment extends Fragment {
 

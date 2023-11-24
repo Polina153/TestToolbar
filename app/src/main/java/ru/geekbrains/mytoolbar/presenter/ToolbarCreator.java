@@ -1,4 +1,4 @@
-package ru.geekbrains.mytoolbar;
+package ru.geekbrains.mytoolbar.presenter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,12 +8,12 @@ import androidx.appcompat.widget.Toolbar;
 
 public class ToolbarCreator {
 
-    void setActionBar(@NonNull Toolbar toolbar,
-                      @NonNull AppCompatActivity activity) {
+    public void setActionBar(@NonNull Toolbar toolbar,
+                             @NonNull AppCompatActivity activity) {
         activity.setSupportActionBar(toolbar);
     }
 
-    void setButtonBack(@Nullable ActionBar actionBar) {
+    public void setButtonBack(@Nullable ActionBar actionBar) {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);

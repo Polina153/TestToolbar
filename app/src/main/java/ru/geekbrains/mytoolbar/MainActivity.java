@@ -4,6 +4,10 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import ru.geekbrains.mytoolbar.presenter.Navigator;
+import ru.geekbrains.mytoolbar.presenter.ToolbarCreator;
+import ru.geekbrains.mytoolbar.view.main_screen.MainFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private final ToolbarCreator toolbarCreator = new ToolbarCreator();

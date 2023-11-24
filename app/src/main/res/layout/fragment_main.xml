@@ -14,13 +14,11 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/my_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:subtitle="@string/my_fragment_subtitle"
             app:subtitleTextColor="@color/white"
             app:title="@string/app_name"
             app:titleTextColor="@color/text_color"
+            style="@style/my_style"
             />
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -1,4 +1,4 @@
-package ru.geekbrains.mytoolbar;
+package ru.geekbrains.mytoolbar.presenter;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
@@ -14,6 +14,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+
+import ru.geekbrains.mytoolbar.R;
+import ru.geekbrains.mytoolbar.model.ISharedPreferences;
+import ru.geekbrains.mytoolbar.model.Note;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
@@ -71,7 +75,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         notifyItemInserted(positionOfNewElement);
     }
 
-    int getPosition() {
+    public int getPosition() {
         return position;
     }
 
@@ -137,7 +141,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         }
     }
 
-    interface OnMyItemClickListener {
+    public interface OnMyItemClickListener {
         void onListItemClick(Note note, int position);
     }
 

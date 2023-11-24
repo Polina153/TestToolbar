@@ -1,36 +1,36 @@
-package ru.geekbrains.mytoolbar;
+package ru.geekbrains.mytoolbar.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-class Note implements Parcelable {
+public class Note implements Parcelable {
 
     private final String title;
     private final String body;
     private final String date;
     private final boolean isImportant;
 
-    Note(String title, String body, String date, Boolean isImportant) {
+    public Note(String title, String body, String date, Boolean isImportant) {
         this.title = title;
         this.body = body;
         this.date = date;
         this.isImportant = isImportant;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    String getBody() {
+    public String getBody() {
         return body;
     }
 
-    String getDate() {
+    public String getDate() {
         return date;
         //return new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date());/*Calendar.getInstance().getTime().toString()*/
     }
 
-    boolean getIsImportant() {
+    public boolean getIsImportant() {
         return isImportant;
     }
 

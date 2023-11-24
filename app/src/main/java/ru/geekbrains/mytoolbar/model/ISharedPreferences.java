@@ -1,10 +1,10 @@
-package ru.geekbrains.mytoolbar;
+package ru.geekbrains.mytoolbar.model;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-interface ISharedPreferences {
+public interface ISharedPreferences {
 
     void saveNote(@NonNull Note note, int position);
 

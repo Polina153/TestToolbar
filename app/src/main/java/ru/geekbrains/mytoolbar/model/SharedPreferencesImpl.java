@@ -1,4 +1,4 @@
-package ru.geekbrains.mytoolbar;
+package ru.geekbrains.mytoolbar.model;
 
 import android.content.SharedPreferences;
 
@@ -11,13 +11,13 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-class SharedPreferencesImpl implements ISharedPreferences {
+public class SharedPreferencesImpl implements ISharedPreferences {
 
     private static final String MY_SHARED_PREF_KEY = "MY_SHARED_PREF_KEY";
     @NonNull
     private final SharedPreferences sharedPref;
 
-    SharedPreferencesImpl(@NonNull SharedPreferences sharedPref) {
+    public SharedPreferencesImpl(@NonNull SharedPreferences sharedPref) {
         this.sharedPref = sharedPref;
     }
 
